@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+import { getAge } from '../common/index.js';
+
 const Schema = mongoose.Schema;
 
 // Objectscheme/-model for database
@@ -19,7 +21,8 @@ const usersSchema = new Schema({
         lat: Number,
         lon: Number
     },
-    favourites: [{ type: mongoose.Types.ObjectId, ref: 'Location'}],
+    favouriteLocations: [{ type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'Location'}],
+    favouriteTours: [{ type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'Tour'}],
     isAdmin: {type: Boolean, default: false},
     isBarFly: {type: Boolean, default: false},
     birthDay: {type: Number, required: true},
@@ -35,11 +38,22 @@ const usersSchema = new Schema({
 
 // saving passwords in a different collection for extra security
 const passwordsSchema = new Schema({
-    password: {type: String, required: true},
-    user: {type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'User'}
+    user: {type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'User'},
+    password: {type: String, required: true}
 },
 {timestamps: true}
 );
+
+// function written like this to use 'this'
+usersSchema.methods.getAge = function () {
+    return getAge(this.birthYear, this.birthMonth -1, this.birthDay);
+};
+
+usersSchema.pre('save', function () {
+    const user = this;
+    user.age = getAge(this.birthYear, this.birthMonth -1, this.birthDay);
+})
+
 
 export const User = mongoose.model('User', usersSchema);
 export const Password = mongoose.model('Password', passwordsSchema);

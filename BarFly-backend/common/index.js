@@ -22,7 +22,6 @@ cloudinary.config({
 });
 
 
-// TODO plainText comes from....
 const getHash = (plainText) => bcrypt.hashSync(plainText, SALT_ROUNDS);
   
 const checkPassword = (password, hash) => bcrypt.compareSync(password, hash);
@@ -38,6 +37,8 @@ const checkToken = async (req, res, next) => {
     }
   
     const { authorization } = req.headers;
+
+    console.log(req.headers);
   
     if (!authorization) {
       // status 401 unauthorized
@@ -53,18 +54,23 @@ const checkToken = async (req, res, next) => {
       return next(new HttpError('Invalid token', 401));
     }
   
-    let verifiedMember;
+    let verifiedUser;
     try {
-    verifiedMember = await Member.findById(decoded.id);
+      verifiedUser = await User.findById(decoded.id);
     } catch {
       return next(new HttpError('Invalid token', 401));
     }
   
-    req.verifiedMember = verifiedMember;
+    req.verifiedUser = verifiedUser;
   
     next();
 };
 
+
+// 
+// TODO: veraltete funktion???
+// 
+// 
 const userExists = (users, nickname, email) => {
     // Prüfen im Members Array auf Vorhandensein
     // Early return pattern (sobald wie möglich die Funktion verlassen)
@@ -78,7 +84,11 @@ const userExists = (users, nickname, email) => {
     }
   
     return false;
-  };
+};
+// 
+// 
+// 
+// 
 
 
 // Cloudinary functionality

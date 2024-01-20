@@ -18,9 +18,9 @@ const locationsSchema = new Schema({
         lon: Number
     },
     categories: [{type: String}],
-    openingDay: {type: Number, required: true},
-    openingMonth: {type: Number, required: true},
-    openingYear: {type: Number, required: true},
+    birthDay: {type: Number, required: true},
+    birthMonth: {type: Number, required: true},
+    birthYear: {type: Number, required: true},
     smallDescription: {type: String, required: true},
     detailedDescription: {type: String, required: true},
     unlockKey: String,
@@ -31,8 +31,8 @@ const locationsSchema = new Schema({
 );
 
 const locationPasswordsSchema = new Schema({
-    locationPassword: {type: String, required: true},
-    location: {type: mongoose.Types.ObjectId, ref: 'Location'}
+    location: {type: mongoose.Types.ObjectId, ref: 'Location'},
+    locationPassword: {type: String, required: true}
 },
 {timestamps: true}
 );
