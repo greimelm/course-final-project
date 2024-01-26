@@ -24,6 +24,12 @@ const createTour = async (req, res, next) => {
   const formData = req.body;
   console.log(formData);
 
+  // object ids: string operation
+  // locations array erzeugen
+
+  const locations = req.body.locations.split(';');
+  console.log(locations);
+
   // destructuring owner id
   const { id } = req.params;
 
@@ -56,6 +62,7 @@ const createTour = async (req, res, next) => {
     // req.body enthält ungeprüftes statement, das vom express-validator ignoriert wird; matchData überschreibt mit geprüften Daten
     ...req.body,
     ...matchData,
+    locations,
     owner: id,
     photo
   });
@@ -73,7 +80,7 @@ const createTour = async (req, res, next) => {
 };
 
 const getAllTours = async (req, res) => {
-  const tours = await Tour.find({});
+  const tours = await Tour.find({}).populate('locations');
   res.json(tours);
 };
 
@@ -81,7 +88,7 @@ const getOneTour = async (req, res, next) => {
   let tour;
 
   try {
-    tour = await Tour.findById(req.params.id);
+    tour = await Tour.findById(req.params.id).populate('locations');
   } catch (error) {
     return next(new HttpError("Cant find tour", 404));
   }

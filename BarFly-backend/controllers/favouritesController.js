@@ -10,24 +10,32 @@ import HttpError from "../models/http-errors.js";
 
 const createFavouriteLocation = async (req, res, next) => {
     const { userId, locationId } = req.params;
+
+    
   
     // User suchen
     let user;
     let savedUser;
+
+    // dynamisch array auswählen
+      // 
+    // tenary operator array bestimmen
+    const array = 'favouriteLocations';
   
     try {
         user = await User.findById(userId);
       if (!user) {
         return next(new HttpError('Cant find user', 404));
       }
+      
   
-      if (user.favouriteLocations.includes(locationId)) {
+      if (user[array].includes(locationId)) {
         return next(new HttpError('Favourite list must be unique', 409));
       }
-  
-      user.favouriteLocations.push(locationId);
+      
+      user[array].push(locationId);
       savedUser = await User.save();
-      savedUser = await User.findById(userId).populate('favouriteLocations');
+      savedUser = await User.findById(userId).populate(array);
     } catch (error) {
       console.log(error);
       return next(new HttpError('Cant find user', 404));
