@@ -151,7 +151,7 @@ const getOneUser = async (req, res, next) => {
   try {
     user = await User.findById(req.params.id);
   } catch (error) {
-    return next(new HttpError("Cant find member", 404));
+    return next(new HttpError("Cant find user", 404));
   }
 
   res.json(user);

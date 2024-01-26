@@ -70,6 +70,9 @@ const locationSignup = async (req, res, next) => {
   });
 
   let newLocation;
+  // 
+  // eigenes Psswort oder über owner?
+  // 
   
   try {
     // Session und Transaction starten
@@ -108,15 +111,15 @@ const getAllLocations = async (req, res) => {
 };
 
 const getOneLocation = async (req, res, next) => {
-  let locations;
+  let location;
 
   try {
-    locations = await Location.findById(req.params.id);
+    location = await Location.findById(req.params.id);
   } catch (error) {
-    return next(new HttpError("Cant find member", 404));
+    return next(new HttpError("Cant find location", 404));
   }
 
-  res.json(locations);
+  res.json(location);
 };
 
 //
@@ -161,7 +164,7 @@ const editLocation = async (req, res, next) => {
     // deleting old image
     await deleteFileInCloudinary(location.photo.cloudinaryPublicId);
 
-    user.photo = {
+    location.photo = {
       cloudinaryPublicId: response.public_id,
       url: response.secure_url,
     };

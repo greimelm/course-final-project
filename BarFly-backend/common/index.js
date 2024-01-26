@@ -224,6 +224,27 @@ const storage = multer.diskStorage({
       return age;
   };
 
+const generateTour = () => {
+  // eingabe:
+  // standort (city)
+  // anzahl stationen (2-4)
+  // array categories (0-3)
+
+  // get all locations from city
+
+  // loop with all values from category-array through categories-array of location objects to compare => vibe array
+
+  // if no categories => randomize?
+
+  // getDistance zw Standort & vibe array locations => sort by nearest locations
+
+  // splice sorted array by anzahl stationen
+
+  // push ergebnis in resultTours-array (array aus arrays mit location objects)
+
+  // rinse & repeat für alle angegebenen categories für alternative touren
+};
+
 
   export {
     getHash,
