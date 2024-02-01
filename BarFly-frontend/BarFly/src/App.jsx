@@ -1,13 +1,20 @@
 import './App.css'
+import { useEffect } from 'react';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { routes } from '../src/routes';
+import useStore from '../src/stores/useStore.js';
+
+import { routesPublic, routesPrivate } from '../src/routes';
 
 const App = () => {
-  // user token in appstore checken
+  const { userObj, checkToken } = useStore((state) => state);
 
-  const router = createBrowserRouter(routes);
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const router = createBrowserRouter(userObj ? routesPrivate : routesPublic);
 
   return <RouterProvider router={router} />;
 };

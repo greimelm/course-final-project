@@ -1,25 +1,56 @@
 import { Navigate } from 'react-router-dom';
 
-// relative paths
+// TODO relative paths
 import Start from './views/Start';
+import UserSignup from './views/UserSignup';
+import UserLogin from './views/UserLogin';
 import Selection from './views/Selection';
+import CreateTour from './views/CreateTour';
+import GeneratedTours from './views/GeneratedTours';
 import Home from './views/Home';
+import FavBars from './views/FavBars';
+import FavTours from './views/FavTours';
 import UserProfile from './views/UserProfile';
-import GeneratedTour from './views/GeneratedTours';
 import BarProfile from './views/BarProfile';
 
-const routes = [
+
+const routesPublic = [
     {
         path: '',
         children: [
+            // path: '/' does not have an element? obwohl Start
             {
-                path: '/',
+                path: '/start',
                 element: <Start />
+            },
+            {
+                path: '/user-signup',
+                element: <UserSignup />
+            },
+            {
+                path: '/user-login',
+                element: <UserLogin />
             },
             {
                 path: '/selection',
                 element: <Selection />
             },
+            {
+                path: '/generated-tour',
+                element: <GeneratedTours />
+            },
+            {
+                path: '/',
+                element: <Navigate to='/start' />
+            }
+        ]
+    }
+];
+
+const routesPrivate = [
+    {
+        path: '',
+        children: [
             {
                 path: '/home',
                 element: <Home />
@@ -40,10 +71,7 @@ const routes = [
                 path: '/create-tour',
                 element: <CreateTour />
             },
-            {
-                path: '/generated-tour',
-                element: <GeneratedTour />
-            },
+            
             {
                 path: '/fav-bars',
                 element: <FavBars />
@@ -60,4 +88,4 @@ const routes = [
     }
 ];
 
-export { routes };
+export { routesPublic, routesPrivate };

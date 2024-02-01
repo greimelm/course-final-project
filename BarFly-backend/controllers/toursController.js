@@ -207,4 +207,28 @@ const deleteTour = async (req, res, next) => {
   res.send('tour deleted successfully');
 };
 
+const generateTour = () => {
+  // validate form data (name, city(choose from list), numStations, array of categories(categories added by configured buttons))
+  // description checked in matchedData
+
+  // save each in variables
+
+  // pull locations filtered by city => barArray
+
+  // let finalBars = [];
+  // for (let j=0; j < numStations; j += 1) {
+  // for (let i=0; i < categoryArr.length; i+= 1) {
+    // let selectedCategory = categoryArr[i];
+    // if(barArray.find(obj => obj.categories.includes(selectedCategory))) {
+      // finalBars.push(obj);
+    // }
+    // }
+    // return finalBars; => equals 1 tour
+  // }
+  // tours need to be unique
+  // there should be alternatives
+
+
+};
+
 export { createTour, getAllTours, getOneTour, editTour, deleteTour };
