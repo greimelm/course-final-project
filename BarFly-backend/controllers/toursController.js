@@ -207,28 +207,47 @@ const deleteTour = async (req, res, next) => {
   res.send('tour deleted successfully');
 };
 
-const generateTour = () => {
+const generateTour = async(req, res, next) => {
   // validate form data (name, city(choose from list), numStations, array of categories(categories added by configured buttons))
   // description checked in matchedData
 
-  // save each in variables
+   // save each in variables
+  const numStations = 3;
 
+  const categoriesArr = ['hot spot', 'award winning'];
+ 
+  let filteredBars = [];
+
+  try{
   // pull locations filtered by city => barArray
+  filteredBars = await Location.find({ city: 'Wien' });
+  console.log(filteredBars);
+  } catch (error) {
+    console.log(error);
+    return next(new HttpError("Server error", 500));
+  }
 
-  // let finalBars = [];
-  // for (let j=0; j < numStations; j += 1) {
-  // for (let i=0; i < categoryArr.length; i+= 1) {
-    // let selectedCategory = categoryArr[i];
-    // if(barArray.find(obj => obj.categories.includes(selectedCategory))) {
-      // finalBars.push(obj);
-    // }
-    // }
-    // return finalBars; => equals 1 tour
-  // }
+  let finalBars = [];
+  for (let j=0; j < numStations; j += 1) {
+  for (let i=0; i < categoriesArr.length; i+= 1) {
+    let selectedCategory = categoriesArr[i];
+    console.log(selectedCategory);
+    const result = filteredBars.find(obj => obj.categories.includes(selectedCategory));
+    console.log(result);
+    if(!result) {
+      finalBars.push(result);
+    }
+    
+    }
+  }
+
+  console.log(finalBars);
+  // => equals 1 tour
+
   // tours need to be unique
   // there should be alternatives
-
+  res.send(finalBars);
 
 };
 
-export { createTour, getAllTours, getOneTour, editTour, deleteTour };
+export { createTour, getAllTours, getOneTour, editTour, deleteTour, generateTour };

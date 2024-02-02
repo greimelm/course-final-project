@@ -34,7 +34,7 @@ const GeneratedTours = () => {
 
 return (
     <>
-        <Typography variant='h2'>Willkomen</Typography>
+        <Typography variant='h2'>Willkommen</Typography>
         {/* decimal coordinates for default center */}
         <MapContainer center={[48.208354, 16.372504]} zoom={13} style={{ height: '80vh', width: '80vw'}}>
             {/* <TileLayer 
@@ -49,14 +49,14 @@ return (
              url='https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
             />
 
-            {/*
+{/*             
             {markers.map(marker => (
                 <Marker key={marker.id} position={marker.geocode}>
-                    {/* display any html inside popup! */}
-                    {/* <Popup><h3>{marker.popUp}</h3></Popup>
+                    {/* display any html inside popup! 
+                     <Popup><h3>{marker.popUp}</h3></Popup>
                 </Marker> 
-            ))} 
-            */}
+            ))}  */}
+           
             <RoutingControl />
 
 

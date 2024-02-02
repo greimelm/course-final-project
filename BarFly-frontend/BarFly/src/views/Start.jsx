@@ -12,7 +12,7 @@ const Start = () => {
 
 return (
     <>
-        <Typography variant='h2'>Willkomen</Typography>
+        <Typography variant='h2'>Willkommen</Typography>
         <Button onClick={handleClick} variant='contained'>
             Zur Selection
         </Button>

@@ -29,7 +29,8 @@ import {
   getAllTours,
   getOneTour,
   editTour,
-  deleteTour
+  deleteTour,
+  generateTour
 } from "../controllers/toursController.js";
 
 import {
@@ -150,6 +151,8 @@ router.delete('/locations/:id', checkToken, deleteLocation);
 
 router.get('/tours', getAllTours);
 router.get('/tours/:id', getOneTour);
+
+router.get('/generate-tour', generateTour);
 
 router.post(
   '/tours/create/:id',

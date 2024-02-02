@@ -21,8 +21,8 @@ const usersSchema = new Schema({
         lat: Number,
         lon: Number
     },
-    favouriteLocations: [{ type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'Location'}],
-    favouriteTours: [{ type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'Tour'}],
+    // favouriteLocations: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Location'}],
+    // favouriteTours: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Tour'}],
     isAdmin: {type: Boolean, default: false},
     isBarFly: {type: Boolean, default: false},
     birthDay: {type: Number, required: true},

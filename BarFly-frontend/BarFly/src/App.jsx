@@ -14,7 +14,9 @@ const App = () => {
     checkToken();
   }, []);
 
-  const router = createBrowserRouter(userObj ? routesPrivate : routesPublic);
+  console.log(userObj);
+  // const router = createBrowserRouter(userObj ? routesPrivate : routesPublic);
+  const router = createBrowserRouter(routesPublic);
 
   return <RouterProvider router={router} />;
 };

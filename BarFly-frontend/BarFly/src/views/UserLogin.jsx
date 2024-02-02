@@ -1,4 +1,4 @@
-import { Link as RouterLink, redirect } from "react-router-dom";
+import { Link as RouterLink, redirect, useNavigate } from "react-router-dom";
 
 import useStore from "../stores/useStore";
 import {
@@ -18,13 +18,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const UserLogin = () => {
   const { userlogin, userObj, error } = useStore((state) => state);
 
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     userlogin(data.get("login"), data.get("password"));
 
     if (userObj) {
-      return redirect("/start");
+      return navigate("/start");
     }
   };
 

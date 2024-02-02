@@ -29,25 +29,25 @@ import ImageUploader from "../components/common/ImageUploader";
 
 const UserSignup = () => {
   // getting state from store
-  const { signup, newUser, error } = useStore((state) => state);
+  const { usersignup, newUser, error } = useStore((state) => state);
 
   const [warning, setWarning] = useState();
 
   const { formState, handleChange } = useForm({
     // default form bzw beispiel
-    firstName: "Peter",
-    lastName: "Pruzina",
-    nickname: "pruzi111",
+    firstName: "Maxima",
+    lastName: "Musterfrau",
+    nickname: "beispiel123",
     password: "",
     passwordConfirm: "",
-    email: "info@irgendwas.at",
-    street: "Borsbergstraße 14",
-    zip: "01309",
-    city: "Dresden",
+    email: "maxima@irgendwas.at",
+    street: "Neubaugasse 12",
+    zip: "1070",
+    city: "Wien",
     photo: null,
-    birthDay: 21,
+    birthDay: 1,
     birthMonth: 1,
-    birthYear: 1966,
+    birthYear: 1964
   });
 
   const navigate = useNavigate();
@@ -74,8 +74,9 @@ const UserSignup = () => {
       submitForm.append(key, value);
     });
 
+    console.log(submitForm);
     // funktion aus store
-    signup(submitForm);
+    usersignup(submitForm);
   };
 
   return (

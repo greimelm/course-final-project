@@ -104,7 +104,7 @@ const useStore = create((set, get) => ({
       });
   },
 
-  signup: (data) => {
+  usersignup: (data) => {
     // bekommt Daten aus einer Maske über Parameter
     set({ loading: true, error: null, newUser: null });
 
@@ -190,150 +190,34 @@ const useStore = create((set, get) => ({
         set({ loading: false });
       });
   },
-//   
-// ab hier weiter ausbessern
-// 
 
-  // setVisit: (targetMember) => {
-  //   // Reset
-  //   set({ loading: true, error: null, success: false });
+  generatetour: (data) => {
+    // bekommt Daten aus einer Maske über Parameter
+    set({ loading: true, error: null, success: false });
 
-  //   // Schnittstelle mit Post aufrufen
-  //   fetchAPI({
-  //     url: HOST + '/visits',
-  //     method: 'post',
-  //     data: { targetMember, visitor: get().user._id },
-  //     token: get().token,
-  //   })
-  //     .then((response) => {
-  //       // reponse.data = der neue Member, Statuscode = 200
-  //       if (response.status === 200) {
-  //         set({ success: true });
-  //       } else {
-  //         throw new Error('Vom Server kam was komisches');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.log('ich bin in catch', error);
-  //       set({ error });
-  //     })
-  //     .finally(() => {
-  //       // Laden der Daten beendet
-  //       set({ loading: false });
-  //     });
-  // },
-
-  // getOneUser: (id) => {
-  //   // Reset
-  //   set({ loading: true, error: null, success: false, selectedMember: null });
-
-  //   // Schnittstelle mit Post aufrufen
-  //   fetchAPI({
-  //     url: HOST + '/users/' + id,
-  //   })
-  //     .then((response) => {
-  //       // reponse.data = der neue Member, Statuscode = 200
-  //       if (response.status === 200) {
-  //         set({ success: true, selectedMember: response.data });
-  //       } else {
-  //         throw new Error('Vom Server kam was komisches');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.log('ich bin in catch', error);
-  //       set({ error });
-  //     })
-  //     .finally(() => {
-  //       // Laden der Daten beendet
-  //       set({ loading: false });
-  //     });
-  // },
-
-  // addFavorite: (targetMember) => {
-  //   // Reset
-  //   set({ loading: true, error: null, success: false });
-
-  //   // Schnittstelle mit Post aufrufen
-  //   fetchAPI({
-  //     url: HOST + '/favorites/' + get().user._id + '/' + targetMember,
-  //     method: 'post',
-  //     token: get().token,
-  //   })
-  //     .then((response) => {
-  //       // reponse.data = der neue Member, Statuscode = 200
-  //       if (response.status === 200) {
-  //         set({ success: true, user: response.data });
-  //       } else {
-  //         throw new Error('Vom Server kam was komisches');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.log('ich bin in catch', error);
-  //       set({ error });
-  //     })
-  //     .finally(() => {
-  //       // Laden der Daten beendet
-  //       set({ loading: false });
-  //     });
-  // },
-
-  // removeFavorite: (targetMember) => {
-  //   // Reset
-  //   set({ loading: true, error: null, success: false });
-
-  //   // Schnittstelle mit Post aufrufen
-  //   fetchAPI({
-  //     url: HOST + '/favorites/' + get().user._id + '/' + targetMember,
-  //     method: 'delete',
-  //     token: get().token,
-  //   })
-  //     .then((response) => {
-  //       // reponse.data = der neue Member, Statuscode = 200
-  //       if (response.status === 200) {
-  //         set({ success: true, user: response.data });
-  //       } else {
-  //         throw new Error('Vom Server kam was komisches');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.log('ich bin in catch', error);
-  //       set({ error });
-  //     })
-  //     .finally(() => {
-  //       // Laden der Daten beendet
-  //       set({ loading: false });
-  //     });
-  // },
-
-
-  // deleteUser: () => {
-  //   // Reset
-  //   set({ loading: true, error: null, success: false });
-
-  //   // Schnittstelle mit Post aufrufen
-  //   fetchAPI({
-  //     url: HOST + '/users/' + get().userObj._id,
-  //     method: 'delete',
-  //     token: get().token,
-  //   })
-  //     .then((response) => {
-  //       // reponse.data = der neue Member, Statuscode = 200
-  //       if (response.status === 200) {
-  //         set({ success: true });
-  //         get().logout();
-  //       } else {
-  //         throw new Error('Vom Server kam was komisches');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.log('ich bin in catch', error);
-  //       set({ error });
-  //     })
-  //     .finally(() => {
-  //       // Laden der Daten beendet
-  //       set({ loading: false });
-  //     });
-  // }
+    // Tour generieren im Backend versuchen
+    fetchAPI({
+      url: HOST + '/generate-tour',
+      method: 'get',
+      data
+    })
+      .then((response) => {
+        // reponse.data = der neue Member, Statuscode = 200
+        if (response.status === 200) {
+          set({ success: true });
+        } else {
+          throw new Error('Vom Server kam was komisches');
+        }
+      })
+      .catch((error) => {
+        // console.log('ich bin in catch', error);
+        set({ error });
+      })
+      .finally(() => {
+        // Laden der Daten beendet
+        set({ loading: false });
+      });
+  }
 
 
 }));

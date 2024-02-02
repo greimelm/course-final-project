@@ -15,36 +15,37 @@ import BarProfile from './views/BarProfile';
 
 
 const routesPublic = [
-    {
-        path: '',
-        children: [
+    // {
+        // layout fehlt
+        // path: '',
+        // children: [
             // path: '/' does not have an element? obwohl Start
             {
-                path: '/start',
+                path: 'start',
                 element: <Start />
             },
             {
-                path: '/user-signup',
+                path: 'user-signup',
                 element: <UserSignup />
             },
             {
-                path: '/user-login',
+                path: 'user-login',
                 element: <UserLogin />
             },
             {
-                path: '/selection',
+                path: 'selection',
                 element: <Selection />
             },
             {
-                path: '/generated-tour',
+                path: 'generated-tour',
                 element: <GeneratedTours />
-            },
-            {
-                path: '/',
-                element: <Navigate to='/start' />
             }
-        ]
-    }
+            // {
+            //     path: '/',
+            //     element: <Navigate to='/start' />
+            // }
+        // ]
+    // }
 ];
 
 const routesPrivate = [
@@ -80,10 +81,10 @@ const routesPrivate = [
                 path: '/fav-tours',
                 element: <FavTours />
             },
-            {
-                path: '*',
-                element: <Navigate to='/' />
-            }
+            // {
+            //     path: '*',
+            //     element: <Navigate to='/' />
+            // }
         ]
     }
 ];
