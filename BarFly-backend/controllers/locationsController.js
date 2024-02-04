@@ -22,9 +22,13 @@ const locationSignup = async (req, res, next) => {
   const result = validationResult(req);
 
   const formData = req.body;
-  console.log(req.body);  
-  console.log(formData);
-  console.log(formData.name);
+  // console.log(req.body);  
+  // console.log(formData);
+  // console.log(formData.name);
+  console.log(formData.categories);
+
+
+  const categoryArr = formData.categories.split(',').map(category => category.trim());
 
   // error message to client
   if (result.errors.length > 0) {
@@ -63,6 +67,7 @@ const locationSignup = async (req, res, next) => {
     // req.body enthält ungeprüftes statement, das vom express-validator ignoriert wird; matchData überschreibt mit geprüften Daten
     ...req.body,
     ...matchData,
+    categories: categoryArr,
     photo,
     unlockKey,
     unlockEndsAt,

@@ -221,7 +221,7 @@ const generateTour = async(req, res, next) => {
   try{
   // pull locations filtered by city => barArray
   filteredBars = await Location.find({ city: 'Wien' });
-  console.log(filteredBars);
+  // console.log(filteredBars);
   } catch (error) {
     console.log(error);
     return next(new HttpError("Server error", 500));
@@ -231,11 +231,15 @@ const generateTour = async(req, res, next) => {
   for (let j=0; j < numStations; j += 1) {
   for (let i=0; i < categoriesArr.length; i+= 1) {
     let selectedCategory = categoriesArr[i];
+    // console.log(i);
     console.log(selectedCategory);
+    // console.log(filteredBars[2]);
     const result = filteredBars.find(obj => obj.categories.includes(selectedCategory));
     console.log(result);
-    if(!result) {
+    if(result) {
       finalBars.push(result);
+      // removing added bars
+      filteredBars.splice(filteredBars.indexOf(result), 1);
     }
     
     }
