@@ -9,6 +9,7 @@ import { HOST } from '../utils/constants.js';
 // check all comments & responses
 // 
 
+// TODO userObj
 const initialState = {
   newUser: null,
   userObj: null,
@@ -48,21 +49,19 @@ const useStore = create((set, get) => ({
     // Stammdaten vom angemeldeten Benutzer holen
     fetchAPI({ url: HOST + '/users/' + decodedToken.id })
       .then((response) => {
-        // Stammdaten als "user" speichern
+        // Stammdaten als "userObj" speichern
         set({ userObj: response.data });
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
-        // Laden der Daten beendet
         set({ loading: false });
       });
   },
 
   userlogin: (login, password) => {
-    // bekommt Daten aus einer Maske über Parameter
+
     set({ loading: true, error: null, user: null });
 
     // Login im Backend versuchen
