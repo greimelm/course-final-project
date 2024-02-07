@@ -12,6 +12,11 @@ const Start = () => {
 
 return (
     <>
+    {/* Header (Logo links, Buttons Registrierung & Login rechts)
+        Typography: Willkommen! o.Ä.
+        Auswahl/suche nach Stadt
+        Footer (anders für Startseite mit Beispielbildern)
+    */}
         <Typography variant='h2'>Willkommen</Typography>
         <Button onClick={handleClick} variant='contained'>
             Zur Selection

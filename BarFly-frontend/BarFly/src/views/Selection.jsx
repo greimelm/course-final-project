@@ -25,6 +25,11 @@ const Selection = () => {
     };
 
 return (
+  // kommt von Start, Stadt wird übergeben
+  // Namen geben optional, nur wenn Tour ausgewählt & gespeichert wird
+  // über Buttons werden Kategorien ausgewählt & in Array übergeben
+  // Tour wird daraus generiert mit generateTour aus tourcontroller
+  // Weiterleitug auf GeneratedTour
     <>
         <Typography variant='h2'>Willkomen</Typography>
 

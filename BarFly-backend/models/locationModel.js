@@ -18,6 +18,7 @@ const locationsSchema = new Schema({
         lon: Number
     },
     categories: [{type: String}],
+    openingHours: {type: String, required: true},
     birthDay: {type: Number, required: true},
     birthMonth: {type: Number, required: true},
     birthYear: {type: Number, required: true},
@@ -30,12 +31,4 @@ const locationsSchema = new Schema({
 { timestamps: true}
 );
 
-const locationPasswordsSchema = new Schema({
-    location: {type: mongoose.Types.ObjectId, ref: 'Location'},
-    locationPassword: {type: String, required: true}
-},
-{timestamps: true}
-);
-
 export const Location = mongoose.model('Location', locationsSchema);
-export const LocationPassword = mongoose.model('LocationPassword', locationPasswordsSchema);

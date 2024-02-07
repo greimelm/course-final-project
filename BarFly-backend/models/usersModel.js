@@ -21,8 +21,8 @@ const usersSchema = new Schema({
         lat: Number,
         lon: Number
     },
-    // favouriteLocations: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Location'}],
-    // favouriteTours: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Tour'}],
+    favouriteLocations: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Location'}],
+    favouriteTours: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Tour'}],
     isAdmin: {type: Boolean, default: false},
     isBarFly: {type: Boolean, default: false},
     birthDay: {type: Number, required: true},
@@ -52,7 +52,7 @@ usersSchema.methods.getAge = function () {
 usersSchema.pre('save', function () {
     const user = this;
     user.age = getAge(this.birthYear, this.birthMonth -1, this.birthDay);
-})
+});
 
 
 export const User = mongoose.model('User', usersSchema);

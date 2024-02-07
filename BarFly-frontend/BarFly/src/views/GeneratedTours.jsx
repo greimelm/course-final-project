@@ -33,6 +33,9 @@ const GeneratedTours = () => {
 
 
 return (
+    // kommt von Selection, finalTours Array wird übergeben
+    // links Liste von allen tours, rechts leaflet map mit Anzeige von aktuell ausgewählter tour
+    // Start Tour Button leitet weiter auf Tour Profil (Tour wird hierbei gespeichert & Name wird vergeben)
     <>
         <Typography variant='h2'>Willkommen</Typography>
         {/* decimal coordinates for default center */}

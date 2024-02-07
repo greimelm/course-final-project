@@ -11,6 +11,8 @@ const TourProfile = () => {
     };
 
 return (
+    // kommt von u. A. GeneratedTour
+    // Listet Bar Profile auf
     <>
         <Typography variant='h2'>Willkomen</Typography>
         <Button onClick={handleClick} variant='contained'>
