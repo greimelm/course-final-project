@@ -19,6 +19,8 @@ const locationsSchema = new Schema({
     },
     categories: [{type: String}],
     openingHours: {type: String, required: true},
+    menu: {type: String},
+    reservationLink: {type: String},
     birthDay: {type: Number, required: true},
     birthMonth: {type: Number, required: true},
     birthYear: {type: Number, required: true},

@@ -18,6 +18,24 @@ import {
   getGeolocation
 } from "../common/index.js";
 
+
+const getAllUsers = async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+};
+
+const getOneUser = async (req, res, next) => {
+  let user;
+
+  try {
+    user = await User.findById(req.params.id);
+  } catch (error) {
+    return next(new HttpError("Cant find user", 404));
+  }
+
+  res.json(user);
+};
+
 const signup = async (req, res, next) => {
   // express-validator
   const result = validationResult(req);
@@ -61,7 +79,6 @@ const signup = async (req, res, next) => {
   const geo = await getGeolocation(address);
 
   const createdUser = new User({
-    // req.body enthält ungeprüftes statement, das vom express-validator ignoriert wird; matchData überschreibt mit geprüften Daten
     ...req.body,
     ...matchData,
     photo,
@@ -140,23 +157,10 @@ const login = async (req, res, next) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
-};
 
-const getOneUser = async (req, res, next) => {
-  let user;
-
-  try {
-    user = await User.findById(req.params.id);
-  } catch (error) {
-    return next(new HttpError("Cant find user", 404));
-  }
-
-  res.json(user);
-};
-
+// 
+// 
+// 
 const unlock = async (req, res, next) => {
   console.log(req.headers);
 
@@ -188,6 +192,9 @@ const unlock = async (req, res, next) => {
 
   res.send('Unlock successful');
 };
+// 
+// 
+// 
 
 
 const editUser = async (req, res, next) => {

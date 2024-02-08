@@ -17,14 +17,34 @@ import {
   getGeolocation,
 } from "../common/index.js";
 
+
+const getAllLocations = async (req, res) => {
+  const locations = await Location.find({});
+  res.json(locations);
+};
+
+const getOneLocation = async (req, res, next) => {
+  let location;
+
+  try {
+    location = await Location.findById(req.params.id);
+  } catch (error) {
+    return next(new HttpError("Cant find location", 404));
+  }
+
+  res.json(location);
+};
+
+
 const locationSignup = async (req, res, next) => {
   // express-validator
   const result = validationResult(req);
 
+  const id = req.params.id;
+  console.log(id);
+
   const formData = req.body;
-  // console.log(req.body);  
-  // console.log(formData);
-  // console.log(formData.name);
+
   console.log(formData.categories);
 
 
@@ -64,9 +84,9 @@ const locationSignup = async (req, res, next) => {
   const geo = await getGeolocation(address);
 
   const createdLocation = new Location({
-    // req.body enthält ungeprüftes statement, das vom express-validator ignoriert wird; matchData überschreibt mit geprüften Daten
     ...req.body,
     ...matchData,
+    owner: id,
     categories: categoryArr,
     photo,
     unlockKey,
@@ -75,28 +95,11 @@ const locationSignup = async (req, res, next) => {
   });
 
   let newLocation;
-  // 
-  // eigenes Psswort oder über owner?
-  // 
-  
+
   try {
-    // Session und Transaction starten
-    const session = await mongoose.startSession();
-    session.startTransaction();
 
-    // Speichern im Kontext der Transaction
-    newLocation = await createdLocation.save({ session });
+    newLocation = await createdLocation.save();
 
-    const createdLocationPassword = new LocationPassword({
-      location: newLocation._id,
-      locationPassword: getHash(req.body.locationPassword),
-    });
-
-    // save in context of transaction
-    await createdLocationPassword.save({ session });
-
-    // confirm transaction
-    await session.commitTransaction();
   } catch (error) {
     console.log(error);
     deleteFile(req.file.path);
@@ -107,34 +110,14 @@ const locationSignup = async (req, res, next) => {
 };
 
 // 
-// login?? extra oder über owner?
-// 
-
-const getAllLocations = async (req, res) => {
-  const locations = await Location.find({});
-  res.json(locations);
-};
-
-const getOneLocation = async (req, res, next) => {
-  let location;
-
-  try {
-    location = await Location.findById(req.params.id);
-  } catch (error) {
-    return next(new HttpError("Cant find location", 404));
-  }
-
-  res.json(location);
-};
-
-//
-// unlock/confirm ???
+// "login" through owner account 
 // 
 
 const editLocation = async (req, res, next) => {
-  // 
-  // id muss location id sein, weil darüber in collection gesucht wird
+  // id = owner's id
   const { id } = req.params;
+
+  // checkToken?
 
   const result = validationResult(req);
 
@@ -144,10 +127,6 @@ const editLocation = async (req, res, next) => {
 
   const matchData = matchedData(req);
 
-  // search for user
-  // 
-  // 
-  // TODO: warum 2x fehler catchen???
   let location;
   try {
     location = await Location.findById(id);
@@ -185,16 +164,16 @@ const editLocation = async (req, res, next) => {
   res.json(changedLocation);
 };
 
-// 
-// wie wird changePassword gehandlet?
-// 
 
 const deleteLocation = async (req, res, next) => {
   const { id } = req.params;
+  // 
+  // distinction location id & owner id
+  // 
 
   console.log(req.verifiedUser);
   
-  // find user
+  // find location
   let location;
   try {
     location = await Location.findById(id);
@@ -205,19 +184,7 @@ const deleteLocation = async (req, res, next) => {
     return next(new HttpError('Cant find user', 404));
   }
 
-// 
-// muss zwar nicht checken ob admin, aber ob owner
-// 
-
-  // // looking if user has admin rights
-  // if (!req.verifiedUser.isAdmin) {
-  //   // if not:
-  //   if (req.verifiedUser._id != id) {
-  //     return next(new HttpError('not allowed to delete user', 403));
-  //   }
-  // }
-
-  // deleting everything attached to user:
+  // if owner id aus params == owner id in location object {delete allowed}
 
   const publicId = location.photo.cloudinaryPublicId;
 

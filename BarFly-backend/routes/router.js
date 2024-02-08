@@ -110,7 +110,7 @@ router.get('/locations', getAllLocations);
 router.get('/locations/:id', getOneLocation);
 
 router.post(
-  '/locations/signup',
+  '/locations/signup/:id',
   upload.single("photo"),
   [
     body("name").trim().toLowerCase().isLength({ min: 4, max: 50 }),
