@@ -6,6 +6,9 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { styled, alpha } from '@mui/material/styles';
 
+import Nav from '../components/layout/Nav';
+import Footer from '../components/layout/Footer';
+
 const Start = () => {
 
     const navigate = useNavigate();
@@ -66,6 +69,7 @@ return (
         Auswahl/suche nach Stadt
         Footer (anders für Startseite mit Beispielbildern)
     */}
+      <Nav />
         <Typography variant='h2'>Willkommen</Typography>
         <Search>
             <SearchIconWrapper>
@@ -79,6 +83,8 @@ return (
         <Button onClick={handleClick} variant='contained'>
             Zur Selection
         </Button>
+
+        <Footer />
     </>
 );
 };
