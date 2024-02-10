@@ -14,6 +14,10 @@ import UserProfile from './views/UserProfile';
 import BarProfile from './views/BarProfile';
 
 
+// 
+// TODO redirect bei routen, die es nicht gibt
+// 
+
 const routesPublic = [
     // {
         // layout fehlt
@@ -39,11 +43,11 @@ const routesPublic = [
             {
                 path: 'generated-tour',
                 element: <GeneratedTours />
+            },
+            {
+                path: '/',
+                element: <Navigate to='/start' />
             }
-            // {
-            //     path: '/',
-            //     element: <Navigate to='/start' />
-            // }
         // ]
     // }
 ];

@@ -1,6 +1,7 @@
-import { Link as RouterLink, redirect, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import useStore from "../stores/useStore";
+
 import {
   CssBaseline,
   Avatar,
@@ -11,9 +12,9 @@ import {
   Link,
   Container
 } from "@mui/material";
+
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-// Footer?
 
 const UserLogin = () => {
   const { userlogin, userObj, error } = useStore((state) => state);
