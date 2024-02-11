@@ -47,6 +47,10 @@ const routesPublic = [
             {
                 path: '/',
                 element: <Navigate to='/start' />
+            },
+            {
+                path: '*',
+                element: <Navigate to='/start' />
             }
         // ]
     // }
