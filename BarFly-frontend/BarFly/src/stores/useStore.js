@@ -19,7 +19,8 @@ const initialState = {
   decodedToken: null,
   login: null,
   password: null,
-  success: false
+  success: false,
+  categoryArr: []
 };
 
 const SECONDS_TO_RELOGIN = 30;

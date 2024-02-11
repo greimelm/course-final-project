@@ -20,6 +20,9 @@ import useStore from "../stores/useStore";
 import useForm from "../hooks/useForm";
 import ImageUploader from "../components/common/ImageUploader";
 
+import Nav from '../components/layout/Nav';
+import Footer from '../components/layout/Footer';
+
 // footer component
 // ImageUploader?
 
@@ -81,6 +84,7 @@ const UserSignup = () => {
 
   return (
     <>
+    <Nav />
       <Box
         sx={{
           mt: 8,
@@ -92,11 +96,9 @@ const UserSignup = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <AccountCircleIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Meine Bar registrieren
-        </Typography>
-        <Typography component="h1" variant="h5">
-          Registrieren
+
+        <Typography variant='h4'>
+          Account erstellen
         </Typography>
 
         {newUser && (
@@ -265,7 +267,7 @@ const UserSignup = () => {
         </Link>
 
       </Box>
-      {/* Footer */}
+      <Footer />
     </>
   );
 };

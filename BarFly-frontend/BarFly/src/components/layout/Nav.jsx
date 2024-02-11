@@ -78,7 +78,7 @@ const Nav = () => {
             <Typography variant='subtitle1'>
                   nickname
                 </Typography>
-            <Avatar sx={{ m: '1rem' }} />
+            <Avatar sx={{ bgcolor: 'secondary.main', m: '1rem' }} />
             </Box>
             <Menu
               sx={{ mt: '45px' }}
