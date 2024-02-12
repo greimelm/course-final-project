@@ -1,113 +1,194 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import {
     Button,
-    Grid,
-    Box,
-    Typography
+    Box
   } from "@mui/material";
 
-// import useStore from "../stores/useStore.js";
+import useStore from "../../stores/useStore";
 
-// import useForm from "../hooks/useForm";
-
+// functional component to insert when tour generation is needed
 const SelectionGrid = () => {
-    // const { categoryArr } = useStore((state) => state);
+    const { categoryArr } = useStore((state) => state);
 
-    const buttonClick = () => {
-        console.log('click');
+    // state for every button to change variant on click
+    const [isRooftop, setIsRooftop] = useState(false);
+    const [isSpeakeasy, setIsSpeakeasy] = useState(false);
+    const [isHotspot, setIsHotspot] = useState(false);
+    const [isAwardwinning, setIsAwardwinning] = useState(false);
+    const [hasBarfood, setHasBarfood] = useState(false);
+    const [isCigarLounge, setIsCigarLounge] = useState(false);
+    const [isVegan, setIsVegan] = useState(false);
+    const [isFemaleowned, setIsFemaleowned] = useState(false);
+    const [isClassic, setIsClassic] = useState(false);
+    const [isMixology, setIsMixology] = useState(false);
+    const [isQueer, setIsQueer] = useState(false);
+    const [hasMusic, setHasMusic] = useState(false);
+
+    const handleClick = (event) => {
+        // saving all selected categories in a store array
+        // button values equal all app-wide categories to choose from when generating a tour
+        const buttonValue = event.target.value;
+        
+        if (!categoryArr.includes(buttonValue)) {
+            categoryArr.push(buttonValue);
+        } else {
+            categoryArr.splice(categoryArr.indexOf(buttonValue), 1);
+        }
+        console.log(categoryArr);
+
+        switch (buttonValue) {
+            case 'rooftop':
+                setIsRooftop(!isRooftop);
+                break;
+            case 'speakeasy':
+                setIsSpeakeasy(!isSpeakeasy);
+                break;
+            case 'hot spot':
+                setIsHotspot(!isHotspot);
+                break;
+            case 'award winning':
+                setIsAwardwinning(!isAwardwinning);
+                break;
+            case 'bar food':
+                setHasBarfood(!hasBarfood);
+                break;
+            case 'cigars':
+                setIsCigarLounge(!isCigarLounge);
+                break;
+            case 'vegan':
+                setIsVegan(!isVegan);
+                break;
+            case 'female-owned':
+                setIsFemaleowned(!isFemaleowned);
+                break;
+            case 'classic':
+                setIsClassic(!isClassic);
+                break;
+            case 'mixology':
+                setIsMixology(!isMixology);
+                break;
+            case 'queer':
+                setIsQueer(!isQueer);
+                break;
+            case 'music':
+                setHasMusic(!hasMusic);
+                break;
+
+        }
     }
     
 
     return (
-        <Box sx={{m:'1rem'}}>
-            <Grid container spacing={2} sx={{ mt: 4 }}>
-                <Grid item xs={2.5}>
+        <Box sx={{m:'3rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', maxWidth: '80vw'}}>
                     <Button
-                    variant='outlined'
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isRooftop ? 'contained' : 'outlined'}
                     value='rooftop'
-                    onClick={buttonClick}
+                    onClick={handleClick}
                     >
                         Rooftop
                     </Button>
-                </Grid>
-                <Grid item xs={2.5}>
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isSpeakeasy ? 'contained' : 'outlined'}
+                    value='speakeasy'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Speakeasy
                     </Button>
-                </Grid>
-                <Grid item xs={2.5}>
+                
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isHotspot ? 'contained' : 'outlined'}
+                    value='hot spot'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Hot Spot
                     </Button>
-                </Grid>
-            </Grid>
-            <Grid container spacing={2} sx={{ mt: 4 }}>
-                <Grid item xs={2.5}>
+                
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isAwardwinning ? 'contained' : 'outlined'}
+                    value='award winning'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Award winning
                     </Button>
-                </Grid>
-                <Grid item xs={2.5}>
+           
+       
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={hasBarfood ? 'contained' : 'outlined'}
+                    value='bar food'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Nice Bar Food
                     </Button>
-                </Grid>
-                <Grid item xs={2.5}>
+                
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isCigarLounge ? 'contained' : 'outlined'}
+                    value='cigars'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Cigar lounge
                     </Button>
-                </Grid>
-            </Grid>
-            <Grid container spacing={2} sx={{ mt: 4 }}>
-                <Grid item xs={2.5}>
+               
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isVegan ? 'contained' : 'outlined'}
+                    value='vegan'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Vegan options
                     </Button>
-                </Grid>
-                <Grid item xs={2.5}>
+               
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isFemaleowned ? 'contained' : 'outlined'}
+                    value='female-owned'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Female-owned bars
                     </Button>
-                </Grid>
-                <Grid item xs={2.5}>
+               
                     <Button
-                    variant='outlined'
-                    value='rooftop'
-                    onClick={buttonClick}
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isClassic ? 'contained' : 'outlined'}
+                    value='classic'
+                    onClick={handleClick}
                     >
-                        Rooftop
+                        Classic
                     </Button>
-                </Grid>
-            </Grid>
+               
+                    <Button
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isMixology ? 'contained' : 'outlined'}
+                    value='mixology'
+                    onClick={handleClick}
+                    >
+                        Mixology mention
+                    </Button>
+             
+                    <Button
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={isQueer ? 'contained' : 'outlined'}
+                    value='queer'
+                    onClick={handleClick}
+                    >
+                        LGBTQ+ safe space
+                    </Button>
+               
+                    <Button
+                    sx={{ mb: '2rem', mr: '1vw' }}
+                    variant={hasMusic ? 'contained' : 'outlined'}
+                    value='music'
+                    onClick={handleClick}
+                    >
+                        Live Music/DJ
+                    </Button>
+               
         </Box>
     );
 };

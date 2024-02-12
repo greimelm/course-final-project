@@ -1,21 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Typography, Grid, TextField, Fab, Container } from '@mui/material';
+import { Button, Typography, Grid, TextField, Fab, Container, Box } from '@mui/material';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import useForm from '../hooks/useForm';
 import useStore from '../stores/useStore';
 
+import Logo from '../assets/BarFlyLogoPurple.png';
+
 import SelectionGrid from '../components/layout/SelectionGrid';
 
 const Selection = () => {
-    const { generatetour, error } = useStore((state) => state);
+    const { generatetour, city, categoryArr, error } = useStore((state) => state);
     const navigate = useNavigate();
 
     const { formState, handleChange } = useForm({
-        tourName: 'MeineTour',
-        city: 'MeineStadt'
+        tourName: '',
+        city: ''
       });
 
     const handleClick = () => {
@@ -34,10 +36,19 @@ return (
   // über Buttons werden Kategorien ausgewählt & in Array übergeben
   // Tour wird daraus generiert mit generateTour aus tourcontroller
   // Weiterleitug auf GeneratedTour
-    <>
+    <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '90vw'}}>
+      <Container sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
         <Typography variant='h3'>Wähle Kategorien</Typography>
 
-        <Grid container spacing={2} sx={{ mt: 4 }}>
+        <img
+            src={Logo}
+            alt="BarFly logo"
+            style={{ height: '20vh', cursor: 'pointer' }}
+            onClick={() => navigate('/start')} //or home if logged in
+          />
+      </Container>
+
+        <Grid container spacing={2} justifyContent={'space-evenly'} sx={{ mt: 4 }}>
           <Grid item xs={4}>
             <TextField
               fullWidth
@@ -64,7 +75,7 @@ return (
         <SelectionGrid />
 
         <Container sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}} >
-        <Fab color='primary'>
+        <Fab color='primary' onClick={handleClick}>
           <ArrowBackIcon />
         </Fab>
 
@@ -72,7 +83,7 @@ return (
             Tour generieren
         </Button>
         </Container>
-    </>
+    </Box>
 );
 };
 

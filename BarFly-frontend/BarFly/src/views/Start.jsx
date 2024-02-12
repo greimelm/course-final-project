@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -14,11 +15,18 @@ import Nav from "../components/layout/Nav";
 import Footer from "../components/layout/Footer";
 
 const Start = () => {
+  const { city } = useStore((state) => state);
+  const [ selectedCity, setSelectedCity] = useState(null);
+  
   const navigate = useNavigate();
 
   //
   // TODO: write chosen city in zustand
   //
+
+  const handleChange = (event) => {
+    console.log(event.target.inputProps); //kein zugriff
+  };
 
   const handleClick = () => {
     navigate("/selection");
@@ -64,6 +72,7 @@ const Start = () => {
               inputProps={{
                 ...params.inputProps,
               }}
+              onChange={handleChange}
             />
           )}
         />

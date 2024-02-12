@@ -5,17 +5,74 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, Container, Divider, Box } from '@mui/material';
 
 import RoutingControl from '../utils/RoutingControl';
+
+import TourCard from '../components/layout/TourCard';
+import Logo from '../assets/BarFlyLogolight.png';
 
 const GeneratedTours = () => {
 
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/home');
-    };
+    const bars = [
+        [{
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien', // address dann zusammenbauen
+            photo: Logo
+        },
+        {
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        },
+        {
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        }],
+        [{
+            name: 'Hannelore Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        },
+        {
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        },
+        {
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        }],
+        [{
+            name: 'Josef Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        },
+        {
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        },
+        {
+            name: 'Hammond Bar',
+            openingHours: 'Mo-So 18pm-3am',
+            address: 'Taborstraße 33, 1010 Wien',
+            photo: Logo
+        }]
+    ];
+
 
     // test markers
     // const markers = [
@@ -36,16 +93,23 @@ return (
     // kommt von Selection, finalTours Array wird übergeben
     // links Liste von allen tours, rechts leaflet map mit Anzeige von aktuell ausgewählter tour
     // Start Tour Button leitet weiter auf Tour Profil (Tour wird hierbei gespeichert & Name wird vergeben)
-    <>
-        <Typography variant='h2'>Willkommen</Typography>
+    <Container size='xl' sx={{display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw'}}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', minWidth: '25vw'}}>
+            <Typography variant='h3'>Selected tours</Typography>
+            {bars.map((tour, index) => (
+                <>
+                <TourCard key={index} props={tour}/>
+                <Divider />
+                </>
+            ))}
+        </Box>
         {/* decimal coordinates for default center */}
-        <MapContainer center={[48.208354, 16.372504]} zoom={13} style={{ height: '80vh', width: '80vw'}}>
+        <MapContainer center={[48.208354, 16.372504]} zoom={13} style={{ height: '100vh', width: '100vw'}}>
             {/* <TileLayer 
              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>contributors'
              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             /> */}
 
-            
             <TileLayer
              maxZoom={19}
              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
@@ -64,10 +128,7 @@ return (
 
 
         </MapContainer>
-        <Button onClick={handleClick} variant='contained'>
-            Home
-        </Button>
-    </>
+    </Container>
 );
 };
 

@@ -1,6 +1,13 @@
 import { createTheme } from "@mui/material";
 
 const theme = createTheme({
+    components: {
+        MuiContainer: {
+            defaultProps: {
+                maxWidth: '100vw'
+            }
+        }
+    },
     palette: {
         primary: {
             main: '#372549',
@@ -24,6 +31,15 @@ const theme = createTheme({
         fontFamily: 'Montserrat, sans-serif',
         fontSize: 18,
         h1: {
+            fontFamily: 'Italiana, sans-serif'
+        },
+        h2: {
+            fontFamily: 'Italiana, sans-serif'
+        },
+        h3: {
+            fontFamily: 'Italiana, sans-serif'
+        },
+        h4: {
             fontFamily: 'Italiana, sans-serif'
         }
     }

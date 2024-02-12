@@ -20,7 +20,8 @@ const initialState = {
   login: null,
   password: null,
   success: false,
-  categoryArr: []
+  categoryArr: [],
+  city: null
 };
 
 const SECONDS_TO_RELOGIN = 30;
