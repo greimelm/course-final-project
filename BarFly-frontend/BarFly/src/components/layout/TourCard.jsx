@@ -6,7 +6,7 @@ import LocationCardSmall from './locations/LocationCardSmall';
 const TourCard = (props) => {
 
     
-    console.log(props[0].name);
+    console.log(props.props);
     
 
     // const bars = [
@@ -19,7 +19,7 @@ const TourCard = (props) => {
 
     return (
         <Paper sx={{ display: 'flex', flexDirection: 'row', m: '1rem', p: '1rem'}}>
-            {props.map((location, index) => (
+            {props.props.map((location, index) => (
                 <LocationCardSmall key={index} name={location.name} openingHours={location.openingHours} address={location.address}  />
             ))}
             <Button
