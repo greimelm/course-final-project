@@ -12,6 +12,7 @@ const TourProfile = () => {
 
 return (
     // kommt von u. A. GeneratedTour
+    // popover
     // Listet Bar Profile auf
     <>
         <Typography variant='h2'>Willkomen</Typography>

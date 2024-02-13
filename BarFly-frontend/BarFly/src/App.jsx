@@ -18,8 +18,9 @@ const App = () => {
   }, []);
 
   console.log(userObj);
+  
 
-  const router = createBrowserRouter(userObj ? routesPrivate : routesPublic);
+  const router = createBrowserRouter(userObj ? routesPublic : routesPrivate);
 
   return (
     <ThemeProvider theme={theme}>

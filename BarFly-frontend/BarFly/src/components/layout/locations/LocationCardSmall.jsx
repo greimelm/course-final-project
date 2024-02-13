@@ -13,7 +13,7 @@ const LocationCardSmall = (props) => {
     // };
 
     return (
-        <Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row'}}>
         <img
             src={props.photo}
             alt={props.name} //TODO maybe change to literal string

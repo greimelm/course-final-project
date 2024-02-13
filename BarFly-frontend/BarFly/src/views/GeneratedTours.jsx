@@ -5,7 +5,9 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
-import { Button, Typography, Container, Divider, Box } from '@mui/material';
+import { Typography, Container, Divider, Box, Fab } from '@mui/material';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import RoutingControl from '../utils/RoutingControl';
 
@@ -15,6 +17,10 @@ import Logo from '../assets/BarFlyLogolight.png';
 const GeneratedTours = () => {
 
     const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/selection');
+    }
 
     const bars = [
         [{
@@ -93,7 +99,7 @@ return (
     // kommt von Selection, finalTours Array wird übergeben
     // links Liste von allen tours, rechts leaflet map mit Anzeige von aktuell ausgewählter tour
     // Start Tour Button leitet weiter auf Tour Profil (Tour wird hierbei gespeichert & Name wird vergeben)
-    <Container size='xl' sx={{display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw'}}>
+    <Container size='xl' sx={{display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw', position: 'relative'}}>
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', minWidth: '25vw'}}>
             <Typography variant='h3'>Selected tours</Typography>
             {bars.map((tour, index) => (
@@ -128,6 +134,9 @@ return (
 
 
         </MapContainer>
+        <Fab color='primary' onClick={handleClick} sx={{position: 'fixed', bottom: '0', mb: '3rem', ml: '2rem'}}>
+          <ArrowBackIcon />
+        </Fab>
     </Container>
 );
 };

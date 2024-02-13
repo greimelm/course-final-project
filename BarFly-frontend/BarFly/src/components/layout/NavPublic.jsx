@@ -69,7 +69,7 @@ const Nav = () => {
           
           <Box sx={{ flexGrow: 0 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <Tooltip title={'user-Bereich von Manu'}>
+            <Tooltip title={'Member-Bereich von Manu'}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <ExpandMore sx={{color: '#EACDC2', mr: '1vw' }}/>
                 {/* <Avatar alt={userObj.firstName + ' ' + userObj.lastName} src={userObj.photo.url} /> */}

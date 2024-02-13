@@ -1,13 +1,16 @@
 import { Navigate } from 'react-router-dom';
 
+import LayoutPublic from './components/layout/LayoutPublic';
+import LayoutPrivate from './components/layout/LayoutPrivate';
+
 // TODO relative paths
 import Start from './views/Start';
 import UserSignup from './views/UserSignup';
 import UserLogin from './views/UserLogin';
 import Selection from './views/Selection';
-import CreateTour from './views/CreateTour';
+// import CreateTour from './views/CreateTour';
 import GeneratedTours from './views/GeneratedTours';
-import Home from './views/Home';
+// import Home from './views/Home';
 import FavBars from './views/FavBars';
 import FavTours from './views/FavTours';
 import UserProfile from './views/UserProfile';
@@ -19,11 +22,11 @@ import BarProfile from './views/BarProfile';
 // 
 
 const routesPublic = [
-    // {
-        // layout fehlt
-        // path: '',
-        // children: [
-            // path: '/' does not have an element? obwohl Start
+    {
+        path: '',
+        element: <LayoutPublic />,
+        children: [
+           
             {
                 path: 'start',
                 element: <Start />
@@ -52,34 +55,35 @@ const routesPublic = [
                 path: '*',
                 element: <Navigate to='/start' />
             }
-        // ]
-    // }
+        ]
+    }
 ];
 
 const routesPrivate = [
     {
         path: '',
+        element: <LayoutPrivate />,
         children: [
+            // {
+            //     path: '/home',
+            //     element: <Home /> to be continued
+            // },
             {
-                path: '/home',
-                element: <Home />
-            },
-            {
-                path: '/user',
+                path: '/user/:id',
                 element: <UserProfile />
             },
             {
-                path: '/bar',
+                path: '/bar/:id',
                 element: <BarProfile />
             },
             // {
-            //     path: '/tour',
+            //     path: '/tour/:id',
             //     element: <TourProfile />
             // },
-            {
-                path: '/create-tour',
-                element: <CreateTour />
-            },
+            // {
+            //     path: '/create-tour',
+            //     element: <CreateTour />  to be continued
+            // },
             
             {
                 path: '/fav-bars',
@@ -89,10 +93,10 @@ const routesPrivate = [
                 path: '/fav-tours',
                 element: <FavTours />
             },
-            // {
-            //     path: '*',
-            //     element: <Navigate to='/' />
-            // }
+            {
+                path: '*',
+                element: <Navigate to='/user/:id' />
+            }
         ]
     }
 ];
