@@ -16,8 +16,6 @@ const App = () => {
   useEffect(() => {
     checkToken();
   }, []);
-
-  console.log(userObj);
   
 
   const router = createBrowserRouter(userObj ? routesPrivate : routesPublic);

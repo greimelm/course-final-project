@@ -7,8 +7,7 @@ import {
   Box,
   Button,
   Typography,
-  Paper,
-  Popover,
+  Paper
 } from "@mui/material";
 
 import PictureSlider from "../components/layout/PictureSlider";
@@ -25,21 +24,11 @@ const UserProfile = () => {
 
   const [open, setOpen] = useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleDeleteUser = () => {
     deleteUser();
     setOpen(false);
   };
 
-  const openPopover = Boolean(anchorEl);
-  const id = openPopover ? 'simple-popover' : undefined;
 
   return (
     <Container
@@ -76,34 +65,16 @@ const UserProfile = () => {
           <PictureSlider />
         </Paper>
         <Paper sx={{ display: "flex", flexDirection: "column", m: "2rem" }}>
-          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => navigate('/user-edit')}>
+          <Button variant="contained" sx={{ m: "2rem" }} >
             edit profile
           </Button>
-          {userObj.hasBars.length > 0 &&
-            <Button variant='contained' sx={{ m: '2rem'}}>{userObj.hasBars[0].name}</Button>
-          }
-          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => navigate('/bar-signup')}>
+          <Button variant="contained" sx={{ m: "2rem" }} >
             register my bar
           </Button>
           <Button variant="contained" color="error" sx={{ m: "2rem" }} onClick={() => setOpen(true)}>
             delete profile
           </Button>
         </Paper>
-        <Popover
-            id={id}
-            open={openPopover}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-          anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-        >
-        </Popover>
       </Box>
     </Container>
   );

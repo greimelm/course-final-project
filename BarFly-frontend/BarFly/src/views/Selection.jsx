@@ -26,16 +26,12 @@ const Selection = () => {
 
     const handleGenerate = () => {
       remembertourname(formState.tourName);
-        console.log(categoryArr);
+      console.log(formState.tourName);
       generatetour(categoryArr);
+      navigate('/generated-tour');
     };
 
 return (
-  // kommt von Start, Stadt wird übergeben
-  // Namen geben optional, nur wenn Tour ausgewählt & gespeichert wird
-  // über Buttons werden Kategorien ausgewählt & in Array übergeben
-  // Tour wird daraus generiert mit generateTour aus tourcontroller
-  // Weiterleitug auf GeneratedTour
     <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '90vw'}}>
       <Container sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
         <Typography variant='h3'>Wähle Kategorien</Typography>

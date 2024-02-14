@@ -24,7 +24,7 @@ const locationsSchema = new Schema({
     detailedDescription: {type: String, required: true},
     unlockKey: String,
     unlockEndsAt: Number,
-    activated: {type: Boolean, default: false}
+    activated: {type: Boolean, default: true}
 },
 { timestamps: true}
 );

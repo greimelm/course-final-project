@@ -35,8 +35,6 @@ const EditUserProfile = () => {
     firstName: userObj.firstName,
     lastName: userObj.lastName,
     nickname: userObj.nickname,
-    password: "",
-    passwordConfirm: "",
     email: userObj.email,
     street: userObj.street,
     zip: userObj.zip,
@@ -51,13 +49,6 @@ const EditUserProfile = () => {
 
 
   const handleEdit = () => {
-    // check for password confirmation (are passwords the same?)
-    if (formState.password !== formState.passwordConfirm) {
-      setTimeout(() => {
-        setWarning(null);
-      }, 5000);
-      return setWarning("Kennwörter stimmen leider nicht überein");
-    }
 
     const submitForm = new FormData();
 
@@ -117,28 +108,6 @@ const EditUserProfile = () => {
               label="Email-Adresse"
               name="email"
               value={formState.email}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              fullWidth
-              required
-              type="password"
-              label="Kennwort"
-              name="password"
-              value={formState.password}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              fullWidth
-              required
-              type="password"
-              label="Kennwort-Bestätigung"
-              name="passwordConfirm"
-              value={formState.passwordConfirm}
               onChange={handleChange}
             />
           </Grid>

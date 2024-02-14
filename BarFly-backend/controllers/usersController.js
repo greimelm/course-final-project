@@ -79,7 +79,7 @@ const signup = async (req, res, next) => {
 
   // compile user object with retrieved & calculated data
   const createdUser = new User({
-    ...formData,
+    ...req.body,
     ...matchData,
     photo,
     unlockKey,

@@ -9,7 +9,8 @@ import { Typography, Container, Divider, Box, Fab } from '@mui/material';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import RoutingControl from '../utils/RoutingControl';
+// TO BE developed & implemented
+// import RoutingControl from '../utils/RoutingControl';
 
 import TourCard from '../components/layout/TourCard';
 import Logo from '../assets/BarFlyLogolight.png';
@@ -35,15 +36,15 @@ const GeneratedTours = () => {
             photo: Logo
         },
         {
-            name: 'Hammond Bar',
-            openingHours: 'Mo-So 18pm-3am',
-            address: 'Taborstraße 33, 1010 Wien',
+            name: 'Josef Bar',
+            openingHours: 'Mo-So 18pm-1am',
+            address: 'Sterngasse 1, 1010 Wien',
             photo: Logo
         },
         {
-            name: 'Hammond Bar',
+            name: 'Hannelore Bar',
             openingHours: 'Mo-So 18pm-3am',
-            address: 'Taborstraße 33, 1010 Wien',
+            address: 'Dorotheergasse 6-8, 1010 Wien',
             photo: Logo
         }],
         [{
@@ -85,26 +86,27 @@ const GeneratedTours = () => {
     ];
 
 
-    // test markers
-    // const markers = [
-    //     {
-    //         id: 1,
-    //         geocode: [48.2184021, 16.3806289],
-    //         popUp: "Hammond Bar"
-    //     },
-    //     {
-    //         id: 2,
-    //         geocode: [48.2116623, 16.3737121],
-    //         popUp: "Josef Bar"
-    //     },
-    // ];
+    const markers = [
+        {
+            id: 1,
+            geocode: [48.2184021, 16.3806289],
+            popUp: "Hammond Bar"
+        },
+        {
+            id: 2,
+            geocode: [48.2116623, 16.3737121],
+            popUp: "Josef Bar"
+        },
+        {
+            id: 3,
+            geocode: [48.2079195, 16.3697658],
+            popUp: "Hannelore Bar"
+        }
+    ];
 
 
 return (
-    // kommt von Selection, finalTours Array wird übergeben
-    // links Liste von allen tours, rechts leaflet map mit Anzeige von aktuell ausgewählter tour
-    // Start Tour Button leitet weiter auf Tour Profil (Tour wird hierbei gespeichert & Name wird vergeben)
-    <Container size='xl' sx={{display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw', position: 'relative'}}>
+    <Container size='xl' sx={{display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw', position: 'relative', mt: '8rem'}}>
         <Box sx={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', minWidth: '25vw'}}>
             <Typography variant='h3'>Selected tours</Typography>
             {bars.map((tour, index) => (
@@ -116,10 +118,6 @@ return (
         </Box>
         {/* decimal coordinates for default center */}
         <MapContainer center={[48.208354, 16.372504]} zoom={13} style={{ height: '100vh', width: '100vw'}}>
-            {/* <TileLayer 
-             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>contributors'
-             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            /> */}
 
             <TileLayer
              maxZoom={19}
@@ -127,15 +125,14 @@ return (
              url='https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
             />
 
-{/*             
+            
             {markers.map(marker => (
                 <Marker key={marker.id} position={marker.geocode}>
-                    {/* display any html inside popup! 
                      <Popup><h3>{marker.popUp}</h3></Popup>
                 </Marker> 
-            ))}  */}
+            ))} 
            
-            <RoutingControl />
+            {/* <RoutingControl /> */}
 
 
         </MapContainer>

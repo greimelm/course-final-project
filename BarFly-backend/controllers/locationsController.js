@@ -90,9 +90,10 @@ const locationSignup = async (req, res, next) => {
     photo,
     // unlockKey,
     // unlockEndsAt,
-    activated: true,
     geo
   });
+
+  console.log(createdLocation);
 
   let newLocation;
 
@@ -122,7 +123,7 @@ const locationSignup = async (req, res, next) => {
     console.log('Added in:', user.hasBars);
 
     savedUser = await user.save({ session });
-    savedUser = await User.findById(userId).populate('hasBars');
+    // savedUser = await User.findById(userId).populate('hasBars');
 
     await session.commitTransaction();
     console.log(savedUser);
