@@ -9,20 +9,21 @@ import {
   Grid,
   Box,
   Typography,
-  Alert
+  Alert,
+  Fab
 } from "@mui/material";
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import useStore from "../../stores/useStore";
+import useStore from "../stores/useStore";
 
-import useForm from "../../hooks/useForm";
-import ImageUploader from "../../components/common/ImageUploader";
+import useForm from "../hooks/useForm";
+import ImageUploader from "../components/common/ImageUploader";
 
-
-// 
+//
 // ccheck all comments
-// 
+//
 
 const EditUserProfile = () => {
   // getting state from store
@@ -43,17 +44,11 @@ const EditUserProfile = () => {
     photo: null,
     birthDay: userObj.birthDay,
     birthMonth: userObj.birthMonth,
-    birthYear: userObj.birthYear
+    birthYear: userObj.birthYear,
   });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("user wurde geändert", userObj);
-    if (userObj) {
-      navigate("/user-login");
-    }
-  }, [userObj]);
 
   const handleEdit = () => {
     // check for password confirmation (are passwords the same?)
@@ -79,7 +74,7 @@ const EditUserProfile = () => {
     <>
       <Box
         sx={{
-          m: '8rem',
+          m: "8rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -89,13 +84,11 @@ const EditUserProfile = () => {
           <AccountCircleIcon />
         </Avatar>
 
-        <Typography variant='h4'>
-          Update account
-        </Typography>
+        <Typography variant="h4">Update account</Typography>
 
         {success && (
           <Alert severity="success" sx={{ minWidth: "100%" }}>
-            {`Gratulation, ${userObj.nickname} wurde erfolgreich angelegt!`}
+            {`Gratulation, ${userObj.nickname} wurde erfolgreich geändert!`}
           </Alert>
         )}
 
@@ -232,30 +225,37 @@ const EditUserProfile = () => {
             />
           </Grid>
 
-          <Grid item xs={12}>
+        </Grid>
+
+        <Grid item xs={12}>
             <ImageUploader
               handleChange={handleChange}
               photo={formState.photo}
             />
           </Grid>
-        </Grid>
 
-        {error && (
-          <Typography variant="h6" sx={{ color: "error" }}>
+          {error && (
+          <Alert severity="error" sx={{ minWidth: "100%" }}>
             {error.message}
-          </Typography>
+          </Alert>
         )}
 
-        <Button
-          onClick={handleEdit}
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+        <Box
+          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
         >
-          update profile
-        </Button>
-
+          <Fab
+            color="primary"
+            onClick={() => navigate('/user')}
+            sx={{ mr: "4rem" }}
+          >
+            <ArrowBackIcon />
+          </Fab>
+          <Button onClick={handleEdit} variant="contained" sx={{ my: "2rem" }}>
+            update profile
+          </Button>
+        </Box>
+        
       </Box>
-     
     </>
   );
 };

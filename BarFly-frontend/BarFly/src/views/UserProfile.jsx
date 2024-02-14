@@ -12,18 +12,18 @@ import {
 } from "@mui/material";
 
 import PictureSlider from "../components/layout/PictureSlider";
-
-import EditUserProfile from '../components/layout/EditUserProfile';
-import ChangePassword from '../components/layout/ChangePassword';
+import DeleteUserDialog from '../components/layout/DeleteUserDialog';
 
 import useStore from '../stores/useStore';
 
 const UserProfile = () => {
-  const { userObj } = useStore((state) => state);
+  const { userObj, deleteUser } = useStore((state) => state);
   const navigate = useNavigate();
 
-  const [isEdit, setIsEdit] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
+
+
+  const [open, setOpen] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,8 +33,13 @@ const UserProfile = () => {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const handleDeleteUser = () => {
+    deleteUser();
+    setOpen(false);
+  };
+
+  const openPopover = Boolean(anchorEl);
+  const id = openPopover ? 'simple-popover' : undefined;
 
   return (
     <Container
@@ -43,6 +48,13 @@ const UserProfile = () => {
       <Typography variant="h2" sx={{ mb: "3rem" }}>
         Hallo {userObj.nickname}
       </Typography>
+
+      <DeleteUserDialog
+          open={open}
+          handleClose={() => setOpen(false)}
+          handleDeleteUser={handleDeleteUser}
+        />
+
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Paper
           sx={{
@@ -54,32 +66,32 @@ const UserProfile = () => {
             m: "2rem",
           }}
         >
-          <Button variant="contained" onClick={() => navigate(`/fav-bars/${userObj._id}`)}>
+          <Button variant="contained" onClick={() => navigate('/fav-bars')}>
             see all fav bars
           </Button>
           <PictureSlider />
-          <Button variant="contained" onClick={() => navigate(`/fav-tours/${userObj._id}`)}>
+          <Button variant="contained" onClick={() => navigate('/fav-tours')}>
             see all fav tours
           </Button>
           <PictureSlider />
         </Paper>
         <Paper sx={{ display: "flex", flexDirection: "column", m: "2rem" }}>
-          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => {handleClick(); setIsEdit(true);}}>
+          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => navigate('/user-edit')}>
             edit profile
           </Button>
-          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => {handleClick(); setIsEdit(false);}}>
-            change password
-          </Button>
+          {userObj.hasBars.length > 0 &&
+            <Button variant='contained' sx={{ m: '2rem'}}>{userObj.hasBars[0].name}</Button>
+          }
           <Button variant="contained" sx={{ m: "2rem" }} onClick={() => navigate('/bar-signup')}>
             register my bar
           </Button>
-          <Button variant="contained" color="error" sx={{ m: "2rem" }}>
+          <Button variant="contained" color="error" sx={{ m: "2rem" }} onClick={() => setOpen(true)}>
             delete profile
           </Button>
         </Paper>
         <Popover
             id={id}
-            open={open}
+            open={openPopover}
             anchorEl={anchorEl}
             onClose={handleClose}
           anchorOrigin={{
@@ -91,11 +103,6 @@ const UserProfile = () => {
             horizontal: "center",
           }}
         >
-        {isEdit ? 
-          <EditUserProfile />
-          :
-          <ChangePassword />
-        }
         </Popover>
       </Box>
     </Container>

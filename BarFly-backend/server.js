@@ -52,7 +52,7 @@ app.use((error, req, res, next) => {
     res.status(error.errorCode || 500).json({ message: error.message || "Unknown error" });
 });
 
-const CONNECTION_STRING = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.aivodra.mongodb.net/`;
+const CONNECTION_STRING = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@barflycluster.plqmhvr.mongodb.net/`;
 
 mongoose
     .connect(CONNECTION_STRING)

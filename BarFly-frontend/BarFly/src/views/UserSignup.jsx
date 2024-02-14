@@ -107,9 +107,14 @@ const UserSignup = () => {
         <Typography variant="h4">Account erstellen</Typography>
 
         {newUser && (
+          <>
           <Alert severity="success" sx={{ minWidth: "100%" }}>
-            {`Gratulation, ${newUser.nickname} wurde erfolgreich angelegt!`}
+            {`Gratulation, ${newUser.nickname} wurde erfolgreich registriert!`}
           </Alert>
+          <Alert severity="success" sx={{ minWidth: "100%" }}>
+            {`Aktiviere Deinen Account über die Email, die wir Dir geschickt haben!`}
+          </Alert>
+          </>
         )}
 
         {warning && (

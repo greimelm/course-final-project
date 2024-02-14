@@ -105,12 +105,6 @@ const LocationSignup = () => {
 
         <Typography variant="h4">Bar registrieren</Typography>
 
-        {newLocation && (
-          <Alert severity="success" sx={{ minWidth: "100%" }}>
-            {`Gratulation, ${newLocation.name} wurde erfolgreich angelegt!`}
-          </Alert>
-        )}
-
         <Grid container spacing={2} sx={{ mt: 4 }}>
           <Grid item xs={4}>
             <TextField
@@ -234,6 +228,12 @@ const LocationSignup = () => {
         {error && (
           <Alert severity="error" sx={{ minWidth: "100%" }}>
             {error.message}
+          </Alert>
+        )}
+
+        {newLocation && (
+          <Alert severity="success" sx={{ minWidth: "100%" }}>
+            {`Gratulation, ${newLocation.name} wurde erfolgreich angelegt!`}
           </Alert>
         )}
 

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { validationResult, matchedData } from "express-validator";
 
 import { Location } from "../models/locationModel.js";
+import { User } from "../models/usersModel.js";
 
 import HttpError from "../models/http-errors.js";
 
@@ -47,7 +48,9 @@ const locationSignup = async (req, res, next) => {
   const formData = req.body;
 
   console.log(formData.categories);
+  console.log(formData.owner);
 
+  const userId = formData.owner;
 
   const categoryArr = formData.categories.split(',').map(category => category.trim());
 
@@ -96,9 +99,28 @@ const locationSignup = async (req, res, next) => {
 
   let newLocation;
 
+  let user;
+
   try {
 
-    newLocation = await createdLocation.save();
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    newLocation = await createdLocation.save({ session });
+
+    user = await User.findById(userId);
+    if (!user) {
+      return next(new HttpError('Cant find user', 404));
+    }
+
+    user.hasBars.push(newLocation._id);
+
+    // abort if location cannot be saved as reference
+    if (user.hasBars.indexOf(newLocation._id) < 0) {
+      await session.abortTransaction();
+      return next(new HttpError(error, 500));
+    }
+    console.log('Added in:', user.hasBars);
 
   } catch (error) {
     console.log(error);
@@ -109,9 +131,7 @@ const locationSignup = async (req, res, next) => {
   res.send(newLocation);
 };
 
-// 
-// "login" through owner account 
-// 
+
 
 const editLocation = async (req, res, next) => {
   // id = owner's id

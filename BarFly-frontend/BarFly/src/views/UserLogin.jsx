@@ -9,7 +9,8 @@ import {
   Box,
   Typography,
   Link,
-  Container
+  Container,
+  Alert
 } from "@mui/material";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -26,7 +27,7 @@ const UserLogin = () => {
     userlogin(data.get("login"), data.get("password"));
 
     if (userObj) {
-      return navigate(`/user/${userObj._id}`);
+      return navigate('/user');
     }
   };
 
@@ -76,9 +77,9 @@ const UserLogin = () => {
         />
 
         {error && (
-          <Typography variant="h6" sx={{ color: "darkred" }}>
+          <Alert severity="error" sx={{ minWidth: "100%" }}>
             {error.message}
-          </Typography>
+          </Alert>
         )}
 
         <Button

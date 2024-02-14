@@ -6,6 +6,7 @@ import multer from "multer";
 import random from "random";
 import { v2 as cloudinary } from "cloudinary";
 import axios from "axios";
+import nodemailer from 'nodemailer';
 
 import HttpError from "../models/http-errors.js";
 
@@ -65,6 +66,15 @@ const checkToken = async (req, res, next) => {
   
     next();
 };
+
+const transporter = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
 
 
 // 
@@ -250,6 +260,7 @@ const generateTour = () => {
   export {
     getHash,
     userExists,
+    transporter,
     checkPassword,
     getToken,
     checkToken,

@@ -13,7 +13,8 @@ import {
   sendFileToCloudinary,
   deleteFileInCloudinary,
   checkPassword,
-  getGeolocation
+  getGeolocation,
+  transporter
 } from "../common/index.js";
 
 
@@ -103,10 +104,30 @@ const signup = async (req, res, next) => {
       password: getHash(req.body.password),
     });
 
-    // speichern im Kontext der Transaction
     await createdPassword.save({ session });
 
-    // Transaction bestötigen
+    const activationLink = `http://localhost:8888/api/unlock?unlockKey=${encodeURIComponent(
+      unlockKey
+    )}`;
+
+    // sending email to new user with activation link
+    const mailSent = await transporter.sendMail({
+      from: process.env.MAIL_USER,
+      to: req.body.email,
+      subject: 'Account Aktivierung BarFly',
+      html: `<p>Hallo,</p><p>Klicke den folgenden Link um Deinen Account freizuschalten:</p><a href="${activationLink}">${activationLink}</a>`,
+    });
+
+    console.log(mailSent);
+
+    // abort if message cannot be sent
+    if (!mailSent) {
+      await session.abortTransaction();
+      return next(new HttpError(error, 500));
+    }
+    console.log('Message sent:', mailSent.messageId);
+
+    // commit transaction and save in this context
     await session.commitTransaction();
   } catch (error) {
     console.log(error);
@@ -151,7 +172,7 @@ const login = async (req, res, next) => {
     // send token
     res.send(token);
   } catch {
-    return next(new HttpError("Cannot login member", 400));
+    return next(new HttpError("Cannot login user", 400));
   }
 };
 
@@ -160,10 +181,10 @@ const login = async (req, res, next) => {
 // 
 // 
 const unlock = async (req, res, next) => {
-  console.log(req.headers);
+  console.log('hallooo', req.query);
 
   // receiving unlockKey from request headers
-  const { unlock_key: unlockKey } = req.headers;
+  const unlockKey  = req.query.unlockKey;
   console.log(unlockKey);
   if (!unlockKey) {
     return next(new HttpError('no header', 401));
@@ -224,7 +245,7 @@ const editUser = async (req, res, next) => {
   if (!req.verifiedUser.isAdmin) {
     // is not an admin:
     if (req.verifiedUser._id != id) {
-      return next(new HttpError('not allowed to update member', 403));
+      return next(new HttpError('not allowed to update user', 403));
     }
   }
 

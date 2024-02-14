@@ -142,7 +142,7 @@ const useStore = create((set, get) => ({
 
     // Neuregistrierung im Backend versuchen
     fetchAPI({
-      url: HOST + '/users/' + get().userObj._id,
+      url: HOST + '/users/edit/' + get().userObj._id,
       method: 'patch',
       data,
       token: get().token,
@@ -200,7 +200,7 @@ const useStore = create((set, get) => ({
 
     // Schnittstelle mit Post aufrufen
     fetchAPI({
-      url: HOST + '/users/' + get().user._id,
+      url: HOST + '/users/' + get().userObj._id,
       method: 'delete',
       token: get().token,
     })
@@ -299,6 +299,10 @@ const useStore = create((set, get) => ({
 
   setcategories: (categoryArr) => {
     set({ categoryArr });
+  },
+
+  clearerror: () => {
+    set({ error: null });
   },
 
   addFavLocation: (locationId) => {

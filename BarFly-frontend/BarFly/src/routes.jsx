@@ -7,13 +7,14 @@ import LayoutPrivate from './components/layout/LayoutPrivate';
 import Start from './views/Start';
 import UserSignup from './views/UserSignup';
 import UserLogin from './views/UserLogin';
+import UserProfile from './views/UserProfile';
+import EditUserProfile from './views/EditUserProfile';
 import Selection from './views/Selection';
 // import CreateTour from './views/CreateTour';
 import GeneratedTours from './views/GeneratedTours';
 // import Home from './views/Home';
 import FavBars from './views/FavBars';
 import FavTours from './views/FavTours';
-import UserProfile from './views/UserProfile';
 import LocationSignup from './views/LocationSignup';
 import BarProfile from './views/BarProfile';
 
@@ -70,11 +71,15 @@ const routesPrivate = [
             //     element: <Home /> to be continued
             // },
             {
-                path: '/user/:id',
+                path: '/user',
                 element: <UserProfile />
             },
             {
-                path: '/bar/:id',
+                path: '/user-edit',
+                element: <EditUserProfile />
+            },
+            {
+                path: '/bar',
                 element: <BarProfile />
             },
             {
@@ -96,7 +101,7 @@ const routesPrivate = [
             },
             {
                 path: '*',
-                element: <Navigate to='/user/:id' />
+                element: <Navigate to='/user' />
             }
         ]
     }

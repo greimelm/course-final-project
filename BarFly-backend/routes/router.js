@@ -69,7 +69,7 @@ router.post(
   signup
 );
 
-router.post("/users/unlock", unlock);
+router.get("/unlock", unlock);
 
 router.post("/users/login", login);
 
