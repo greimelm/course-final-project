@@ -27,7 +27,7 @@ const Selection = () => {
 
     const handleGenerate = () => {
 
-        generatetour(submitForm);
+        console.log(categoryArr);
     };
 
 return (

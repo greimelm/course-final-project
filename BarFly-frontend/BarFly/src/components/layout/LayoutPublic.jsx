@@ -1,12 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
 
+import NavPublic from './NavPublic';
+import Footer from './Footer';
+
 
 const LayoutPublic = () => {
   return (
-    <Box>
+    <>
+      <NavPublic />
       <Outlet />
-    </Box>
+      <Footer />
+    </>
   );
 };
 

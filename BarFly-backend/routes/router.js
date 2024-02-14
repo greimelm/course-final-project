@@ -21,7 +21,8 @@ import {
   getOneLocation,
   locationSignup,
   editLocation,
-  deleteLocation
+  deleteLocation,
+  getMyLocations
 } from '../controllers/locationsController.js';
 
 import {
@@ -36,12 +37,8 @@ import {
 import {
   createFavouriteLocation,
   deleteFavouriteLocation,
-  getAllFavLocations,
-  getOneFavLocation,
   createFavouriteTour,
-  deleteFavouriteTour,
-  getAllFavTours,
-  getOneFavTour
+  deleteFavouriteTour
 } from '../controllers/favouritesController.js';
 
 const router = new Router();
@@ -109,21 +106,19 @@ router.delete('/users/:id', checkToken, deleteUser);
 router.get('/locations', getAllLocations);
 router.get('/locations/:id', getOneLocation);
 
+router.get('/mylocations/:id', getMyLocations);
+
 router.post(
-  '/locations/signup/:id',
+  '/locations/signup',
   upload.single("photo"),
   [
-    body("name").trim().toLowerCase().isLength({ min: 4, max: 50 }),
+    body("name").trim().isLength({ min: 4, max: 50 }),
     body("email").toLowerCase().normalizeEmail().isEmail(),
-    body("locationPassword").trim().isLength({ min: 6, max: 50 }),
     body("street").trim().isLength({ min: 3, max: 50 }),
     body("zip").trim().isLength({ min: 4, max: 50 }),
     body("city").trim().isLength({ min: 2, max: 50 }),
-    body("birthDay").isInt({ min: 1, max: 31 }),
-    body("birthMonth").isInt({ min: 1, max: 12 }),
-    body("birthYear").isInt({ min: 1, max: new Date().getFullYear() }),
-    body('smallDescription').isLength({ min: 1, max: 200 }),
-    body('detailedDescription').isLength({ min: 1, max: 1000 })
+    body('smallDescription').isLength({ min: 1, max: 500 }),
+    body('detailedDescription').isLength({ min: 1, max: 10000 })
   ],
   locationSignup
 );
@@ -180,17 +175,11 @@ router.delete('/tours/:id', checkToken, deleteTour);
 
 // favourite locations routes
 
-router.get('/favlocations', getAllFavLocations);
-router.get('/favlocations/:id', getOneFavLocation);
-
 router.post('/favlocations/:id/:locationId', checkToken, createFavouriteLocation);
 
 router.delete('/favlocations/:id/:locationId', checkToken, deleteFavouriteLocation);
 
 // favourite tours routes
-
-router.get('/favtours', getAllFavTours);
-router.get('/favtours/:id', getOneFavTour);
 
 router.post('/favtours/:id/:tourId', checkToken, createFavouriteTour);
 

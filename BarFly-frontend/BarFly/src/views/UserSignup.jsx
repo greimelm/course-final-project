@@ -13,22 +13,16 @@ import {
   Alert,
 } from "@mui/material";
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import useStore from "../stores/useStore";
 
 import useForm from "../hooks/useForm";
 import ImageUploader from "../components/common/ImageUploader";
 
-import Nav from '../components/layout/Nav';
-import Footer from '../components/layout/Footer';
-
-// footer component
-// ImageUploader?
-
-// 
+//
 // ccheck all comments
-// 
+//
 
 const UserSignup = () => {
   // getting state from store
@@ -38,27 +32,37 @@ const UserSignup = () => {
 
   const { formState, handleChange } = useForm({
     // default form bzw beispiel
-    firstName: "Maxima",
-    lastName: "Musterfrau",
-    nickname: "beispiel123",
+    firstName: "",
+    lastName: "",
+    nickname: "",
     password: "",
     passwordConfirm: "",
-    email: "maxima@irgendwas.at",
-    street: "Neubaugasse 12",
-    zip: "1070",
-    city: "Wien",
+    email: "",
+    street: "",
+    zip: "",
+    city: "",
     photo: null,
-    birthDay: 1,
-    birthMonth: 1,
-    birthYear: 1964
+    birthDay: "",
+    birthMonth: "",
+    birthYear: "",
   });
 
   const navigate = useNavigate();
 
+  // newUser equals success in this view
+
+  const clearForm = () => {
+    const clearedFormState = Object.fromEntries(
+      Object.keys(formState).map((key) => [key, ""])
+    );
+    console.log(clearedFormState);
+    handleChange({ target: { name: "", value: clearedFormState } });
+  };
+
   useEffect(() => {
     console.log("newUser wurde geändert", newUser);
     if (newUser) {
-      navigate("/user-login");
+      clearForm;
     }
   }, [newUser]);
 
@@ -71,6 +75,7 @@ const UserSignup = () => {
       return setWarning("Kennwörter stimmen leider nicht überein");
     }
 
+    console.log(formState.photo);
     const submitForm = new FormData();
 
     Object.entries(formState).forEach(([key, value]) => {
@@ -82,12 +87,14 @@ const UserSignup = () => {
     usersignup(submitForm);
   };
 
+  
+
   return (
     <>
-    <Nav />
       <Box
         sx={{
-          mt: 8,
+          my: "8rem",
+          mx: "3rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -97,9 +104,7 @@ const UserSignup = () => {
           <AccountCircleIcon />
         </Avatar>
 
-        <Typography variant='h4'>
-          Account erstellen
-        </Typography>
+        <Typography variant="h4">Account erstellen</Typography>
 
         {newUser && (
           <Alert severity="success" sx={{ minWidth: "100%" }}>
@@ -239,35 +244,30 @@ const UserSignup = () => {
               onChange={handleChange}
             />
           </Grid>
-
-          <Grid item xs={12}>
-            <ImageUploader
-              handleChange={handleChange}
-              photo={formState.photo}
-            />
-          </Grid>
+        </Grid>
+        <Grid sx={{ m: "2rem" }}>
+          <ImageUploader handleChange={handleChange} photo={formState.photo} />
         </Grid>
 
         {error && (
-          <Typography variant="h6" sx={{ color: "darkred" }}>
+          <Alert severity="error" sx={{ minWidth: "100%" }}>
             {error.message}
-          </Typography>
+          </Alert>
         )}
 
-        <Button
-          onClick={handleSignup}
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
+        <Button onClick={handleSignup} variant="contained" sx={{ my: "2rem" }}>
           Jetzt registrieren
         </Button>
 
-        <Link component={RouterLink} to="/user-login" variant="body2">
+        <Link
+          component={RouterLink}
+          to="/user-login"
+          variant="body2"
+          sx={{ mb: "2rem" }}
+        >
           Sie haben bereits ein Konto? Hier geht es zum Login
         </Link>
-
       </Box>
-      <Footer />
     </>
   );
 };

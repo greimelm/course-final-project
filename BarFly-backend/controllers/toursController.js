@@ -3,7 +3,6 @@ import { validationResult, matchedData } from "express-validator";
 
 import { Tour } from '../models/toursModel.js';
 import { Location } from '../models/locationModel.js';
-import { FavouriteTour } from '../models/favouriteTourModel.js';
 
 import HttpError from "../models/http-errors.js";
 

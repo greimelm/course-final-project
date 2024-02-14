@@ -16,7 +16,10 @@ import PictureSlider from "../components/layout/PictureSlider";
 import EditUserProfile from '../components/layout/EditUserProfile';
 import ChangePassword from '../components/layout/ChangePassword';
 
+import useStore from '../stores/useStore';
+
 const UserProfile = () => {
+  const { userObj } = useStore((state) => state);
   const navigate = useNavigate();
 
   const [isEdit, setIsEdit] = useState(true);
@@ -33,18 +36,12 @@ const UserProfile = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const example = {
-    firstName: "Manu",
-    lastName: "Greimel",
-    nickname: "manu123",
-  };
-
   return (
     <Container
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <Typography variant="h2" sx={{ mb: "3rem" }}>
-        Hallo {example.nickname}
+        Hallo {userObj.nickname}
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Paper
@@ -57,11 +54,11 @@ const UserProfile = () => {
             m: "2rem",
           }}
         >
-          <Button variant="contained" onClick={() => navigate("/fav-bars")}>
+          <Button variant="contained" onClick={() => navigate(`/fav-bars/${userObj._id}`)}>
             see all fav bars
           </Button>
           <PictureSlider />
-          <Button variant="contained" onClick={() => navigate("/fav-tours")}>
+          <Button variant="contained" onClick={() => navigate(`/fav-tours/${userObj._id}`)}>
             see all fav tours
           </Button>
           <PictureSlider />
@@ -73,7 +70,7 @@ const UserProfile = () => {
           <Button variant="contained" sx={{ m: "2rem" }} onClick={() => {handleClick(); setIsEdit(false);}}>
             change password
           </Button>
-          <Button variant="contained" sx={{ m: "2rem" }}>
+          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => navigate('/bar-signup')}>
             register my bar
           </Button>
           <Button variant="contained" color="error" sx={{ m: "2rem" }}>

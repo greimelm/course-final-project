@@ -4,7 +4,7 @@
 // falls nicht leer -> button "My Bars" in Nav anzeigen
 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   AppBar,
   Box,
@@ -17,6 +17,8 @@ import {
   Tooltip,
   MenuItem,
   Divider,
+  Popover,
+  Button
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
@@ -32,25 +34,30 @@ const Nav = () => {
 //   userObj, aus state
   const { userObj, logout } = useStore((state) => state);
 
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
 
 
   return (
@@ -64,21 +71,20 @@ const Nav = () => {
             src={Logo}
             alt="BarFly logo"
             style={{ height: '12vh', cursor: 'pointer' }}
-            onClick={() => navigate('/start')} //or home if logged in
+            onClick={() => navigate('/start')}
           />
           
           <Box sx={{ flexGrow: 0 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <Tooltip title={'user-Bereich von Manu'}>
+            <Tooltip title={`User-Bereich von ${userObj.nickname}`}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <ExpandMore sx={{color: '#EACDC2', mr: '1vw' }}/>
-                {/* <Avatar alt={userObj.firstName + ' ' + userObj.lastName} src={userObj.photo.url} /> */}
               </IconButton>
             </Tooltip>
-            <Typography variant='subtitle1'>
-                  nickname
+            <Typography variant='subtitle1'sx={{mr:'1rem'}}>
+                  {userObj.nickname}
                 </Typography>
-            <Avatar sx={{ bgcolor: 'secondary.main', m: '1rem' }} />
+              <Avatar alt={userObj.firstName + ' ' + userObj.lastName} src={userObj.photo.url} />
             </Box>
             <Menu
               sx={{ mt: '45px' }}
@@ -105,20 +111,39 @@ const Nav = () => {
                 <Typography textAlign="center">Mein Profil</Typography>
               </MenuItem>
 
-              {/* TODO optionales Feld */}
-
-              {/* <MenuItem
-                onClick={() => {
-                  navigate('/fav-bars');
-                  handleCloseUserMenu();
-                }}
+              
+              {userObj.hasBars.length > 0 &&
+              <>
+               <MenuItem
+                onClick={handleClick}
               >
                 <Typography textAlign="center">Meine Bars</Typography>
-              </MenuItem> */}
+              </MenuItem>
+                <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'center',
+                  horizontal: 'left'
+                }}
+                transformOrigin={{
+                  vertical: 'center',
+                  horizontal: 'right',
+                }}
+              >
+                {userObj.hasBars.map((location, index) => (
+                <Button variant='outlined' key={index}  onClick={navigate(`/locations/${location._id}`)}>{location.name}</Button>
+                ))}
+              </Popover>
+              
+            </>
+              }
 
               <MenuItem
                 onClick={() => {
-                  navigate('/fav-bars');
+                  navigate(`/fav-bars/${userObj._id}`);
                   handleCloseUserMenu();
                 }}
               >
@@ -127,7 +152,7 @@ const Nav = () => {
 
               <MenuItem
                 onClick={() => {
-                  navigate('/fav-tours');
+                  navigate(`/fav-tours/${userObj._id}`);
                   handleCloseUserMenu();
                 }}
               >

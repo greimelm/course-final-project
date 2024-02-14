@@ -3,7 +3,6 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import useStore from "../stores/useStore";
 
 import {
-  CssBaseline,
   Avatar,
   Button,
   TextField,
@@ -20,23 +19,24 @@ const UserLogin = () => {
   const { userlogin, userObj, error } = useStore((state) => state);
 
   const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     userlogin(data.get("login"), data.get("password"));
 
     if (userObj) {
-      return navigate("/start");
+      return navigate(`/user/${userObj._id}`);
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{
+    <Container sx={{
       display: "flex",
       flexDirection: "column",
-      alignItems: "center"
+      alignItems: "center",
+      maxWidth:'50vw'
     }}>
-      {/* <CssBaseline /> */}
       <Box
         sx={{
           display: "flex",
@@ -47,8 +47,8 @@ const UserLogin = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <AccountCircleIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Login
+        <Typography variant="h5">
+          Log in
         </Typography>
       </Box>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

@@ -13,6 +13,8 @@ import { HOST } from '../utils/constants.js';
 const initialState = {
   newUser: null,
   userObj: null,
+  newLocation: null,
+  locationObj: null,
   loading: null,
   error: null,
   token: null,
@@ -64,7 +66,7 @@ const useStore = create((set, get) => ({
 
   userlogin: (login, password) => {
 
-    set({ loading: true, error: null, user: null });
+    set({ loading: true, error: null, userObj: null });
 
     // Login im Backend versuchen
     fetchAPI({ url: HOST + '/users/login', method: 'post', data: { login, password } })
@@ -96,7 +98,7 @@ const useStore = create((set, get) => ({
         set({ userObj: response.data });
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
+        console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
@@ -114,7 +116,7 @@ const useStore = create((set, get) => ({
       .then((response) => {
         // reponse.data = der neue Member, Statuscode = 201
         if (response.status === 200) {
-          set({ newUser: response.data });
+          set({ newUser: response.data});
         } else {
           throw new Error('Vom Server kam was komisches');
         }
@@ -192,6 +194,81 @@ const useStore = create((set, get) => ({
       });
   },
 
+  deleteUser: () => {
+    // Reset
+    set({ loading: true, error: null, success: false });
+
+    // Schnittstelle mit Post aufrufen
+    fetchAPI({
+      url: HOST + '/users/' + get().user._id,
+      method: 'delete',
+      token: get().token,
+    })
+      .then((response) => {
+        // reponse.data = der neue Member, Statuscode = 200
+        if (response.status === 200) {
+          set({ success: true });
+          get().logout();
+        } else {
+          throw new Error('Vom Server kam was komisches');
+        }
+      })
+      .catch((error) => {
+        // console.log('ich bin in catch', error);
+        set({ error });
+      })
+      .finally(() => {
+        // Laden der Daten beendet
+        set({ loading: false });
+      });
+  },
+
+  locationsignup: (data) => {
+    // bekommt Daten aus einer Maske über Parameter
+    set({ loading: true, error: null, newLocation: null });
+
+    // Neuregistrierung im Backend versuchen
+    fetchAPI({ url: HOST + '/locations/signup', method: 'post', data, token: get().token })
+      .then((response) => {
+        // reponse.data = der neue Member, Statuscode = 201
+        if (response.status === 200) {
+          set({ newLocation: response.data});
+        } else {
+          throw new Error('Vom Server kam was komisches');
+        }
+      })
+      .catch((error) => {
+        // console.log('ich bin in catch', error);
+        set({ error });
+      })
+      .finally(() => {
+        // Laden der Daten beendet
+        set({ loading: false });
+      });
+  },
+
+  getlocation: (locationId) => {
+    set({ loading: true, error: null, locationObj: null});
+
+    fetchAPI({ url: HOST + '/locations/' + locationId})
+    .then((response) => {
+      if (response.status === 200) {
+        set({ newLocation: response.data});
+      } else {
+        throw new Error('Vom Server kam was komisches');
+      }
+    })
+    .catch((error) => {
+      set({ error });
+    })
+    .finally(() => {
+      set({ loading: false });
+    })
+  },
+
+  // locationedit
+  // deletelocation
+
   generatetour: (data) => {
     // bekommt Daten aus einer Maske über Parameter
     set({ loading: true, error: null, success: false });
@@ -218,7 +295,61 @@ const useStore = create((set, get) => ({
         // Laden der Daten beendet
         set({ loading: false });
       });
-  }
+  },
+
+  setcategories: (categoryArr) => {
+    set({ categoryArr });
+  },
+
+  addFavLocation: (locationId) => {
+    set({ loading: true, error: null, success: false });
+    fetchAPI({
+      url: HOST + '/favlocations/' + get().userObj._id + '/' + locationId,
+      method: 'post',
+      token: get().token,
+    })
+      .then((response) => {
+        // reponse.data = der neue Member, Statuscode = 200
+        if (response.status === 200) {
+          set({ success: true, userObj: response.data });
+        } else {
+          throw new Error('Vom Server kam was komisches');
+        }
+      })
+      .catch((error) => {
+        set({ error });
+      })
+      .finally(() => {
+        // Laden der Daten beendet
+        set({ loading: false });
+      });
+  },
+
+  removeFavLocation: (locationId) => {
+    set({ loading: true, error: null, success: false });
+
+    fetchAPI({
+      url: HOST + '/favlocations/' + get().userObj._id + '/' + locationId,
+      method: 'delete',
+      token: get().token,
+    })
+      .then((response) => {
+        
+        if (response.status === 200) {
+          set({ success: true, userObj: response.data });
+        } else {
+          throw new Error('Vom Server kam was komisches');
+        }
+      })
+      .catch((error) => {
+        
+        set({ error });
+      })
+      .finally(() => {
+      
+        set({ loading: false });
+      });
+  },
 
 
 }));

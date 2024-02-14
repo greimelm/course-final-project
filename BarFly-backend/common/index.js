@@ -112,7 +112,7 @@ const sendFileToCloudinary = async (image, folder) => {
       return error; //rethrow error upwards and propagate it upwards
     }
   
-  };
+};
 
   const deleteFileInCloudinary = async (publicId) => {
     if(!publicId || publicId.length === 0) {
@@ -159,7 +159,8 @@ const storage = multer.diskStorage({
       file.mimetype === 'image/jpeg' ||
       file.mimetype === 'image/jpg' ||
       file.mimetype === 'image/png' ||
-      file.mimetype === 'image/gif'
+      file.mimetype === 'image/gif' ||
+      file.mimetype === 'image/heic'
     ) {
       return callback(null, true);
     }

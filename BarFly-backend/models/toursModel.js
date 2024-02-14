@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 
 const toursSchema = new Schema({
     name: {type: String, required: true, unique: true},
-    owner: {type: mongoose.Types.ObjectId, ref: 'User'},
     photo: {
         cloudinaryPublicId: {type: String, required: true},
         url: {type: String, required: true}

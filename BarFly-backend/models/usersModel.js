@@ -21,10 +21,11 @@ const usersSchema = new Schema({
         lat: Number,
         lon: Number
     },
-    favouriteLocations: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Location'}],
-    favouriteTours: [{ type: mongoose.Types.ObjectId, unique: true, ref: 'Tour'}],
+    favouriteLocations: [{ type: mongoose.Types.ObjectId, ref: 'Location'}],
+    favouriteTours: [{ type: mongoose.Types.ObjectId, ref: 'Tour'}],
     isAdmin: {type: Boolean, default: false},
     isBarFly: {type: Boolean, default: false},
+    hasBars: [{ type: mongoose.Types.ObjectId, ref: 'Location'}],
     birthDay: {type: Number, required: true},
     birthMonth: {type: Number, required: true},
     birthYear: {type: Number, required: true},

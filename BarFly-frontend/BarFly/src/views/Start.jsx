@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 
 import useStore from "../stores/useStore";
-import Nav from "../components/layout/Nav";
-import Footer from "../components/layout/Footer";
+
 
 const Start = () => {
   const { city } = useStore((state) => state);
@@ -45,8 +44,6 @@ const Start = () => {
         Auswahl/suche nach Stadt
         Footer (anders für Startseite mit Beispielbildern)
     */}
-
-      <Nav />
       <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <Typography variant="h2" sx={{ mb: '5vh'}}>Willkommen</Typography>
         <Typography variant="h4" sx={{ mb: '3vh'}}>Wähle eine Stadt</Typography>
@@ -81,7 +78,6 @@ const Start = () => {
         </Button>
       </Container>
 
-      <Footer />
     </>
   );
 };

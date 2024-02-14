@@ -2,18 +2,14 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 import { validationResult, matchedData } from "express-validator";
 
-import { Location, LocationPassword } from "../models/locationModel.js";
-import { FavouriteLocation } from "../models/favouriteLocationModel.js";
+import { Location } from "../models/locationModel.js";
 
 import HttpError from "../models/http-errors.js";
 
 import {
-  getToken,
   deleteFile,
-  getHash,
   sendFileToCloudinary,
   deleteFileInCloudinary,
-  checkPassword,
   getGeolocation,
 } from "../common/index.js";
 
@@ -35,13 +31,18 @@ const getOneLocation = async (req, res, next) => {
   res.json(location);
 };
 
+const getMyLocations = async (req, res) => {
+  const locations = await Location.find({ owner: req.params.id });
+  res.json(locations);
+};
+
 
 const locationSignup = async (req, res, next) => {
   // express-validator
+  console.log(req);
   const result = validationResult(req);
 
-  const id = req.params.id;
-  console.log(id);
+  console.log(result);
 
   const formData = req.body;
 
@@ -86,12 +87,11 @@ const locationSignup = async (req, res, next) => {
   const createdLocation = new Location({
     ...req.body,
     ...matchData,
-    owner: id,
     categories: categoryArr,
     photo,
     unlockKey,
     unlockEndsAt,
-    geo,
+    geo
   });
 
   let newLocation;
@@ -223,4 +223,4 @@ const deleteLocation = async (req, res, next) => {
   res.send('location deleted successfully');
 };
 
-export { locationSignup, getAllLocations, getOneLocation, editLocation, deleteLocation };
+export { locationSignup, getAllLocations, getMyLocations, getOneLocation, editLocation, deleteLocation };

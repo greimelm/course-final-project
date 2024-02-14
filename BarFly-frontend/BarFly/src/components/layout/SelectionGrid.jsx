@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
     Button,
@@ -9,7 +9,11 @@ import useStore from "../../stores/useStore";
 
 // functional component to insert when tour generation is needed
 const SelectionGrid = () => {
-    const { categoryArr } = useStore((state) => state);
+    const { categoryArr, setcategories } = useStore((state) => state);
+
+    useEffect(() => {
+        setcategories(categoryArr);
+    }, [categoryArr]);
 
     // state for every button to change variant on click
     const [isRooftop, setIsRooftop] = useState(false);

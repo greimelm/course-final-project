@@ -3,8 +3,6 @@ import mongoose from "mongoose";
 import { validationResult, matchedData } from "express-validator";
 
 import { User, Password } from "../models/usersModel.js";
-import { FavouriteTour } from "../models/favouriteTourModel.js";
-import { FavouriteLocation } from "../models/favouriteLocationModel.js";
 
 import HttpError from "../models/http-errors.js";
 
@@ -56,7 +54,7 @@ const signup = async (req, res, next) => {
 
   //error if there is no image
   if (!req.file) {
-    return next(new HttpError("Photo is missing", 422));
+    return next(new HttpError("Photo is missing", 423));
   }
 
   // saving image to cloudinary

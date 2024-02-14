@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const locationsSchema = new Schema({
     name: {type: String, required: true, unique: true},
     email: {type: String, required: true, unique: true},
-    owner: {type: mongoose.Types.ObjectId, ref: 'User'},
     street: {type: String, required: true},
     zip: {type: String, required: true},
     city: {type: String, required: true},
@@ -21,9 +20,6 @@ const locationsSchema = new Schema({
     openingHours: {type: String, required: true},
     menu: {type: String},
     reservationLink: {type: String},
-    birthDay: {type: Number, required: true},
-    birthMonth: {type: Number, required: true},
-    birthYear: {type: Number, required: true},
     smallDescription: {type: String, required: true},
     detailedDescription: {type: String, required: true},
     unlockKey: String,

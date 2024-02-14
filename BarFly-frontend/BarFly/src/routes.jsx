@@ -14,6 +14,7 @@ import GeneratedTours from './views/GeneratedTours';
 import FavBars from './views/FavBars';
 import FavTours from './views/FavTours';
 import UserProfile from './views/UserProfile';
+import LocationSignup from './views/LocationSignup';
 import BarProfile from './views/BarProfile';
 
 
@@ -76,10 +77,10 @@ const routesPrivate = [
                 path: '/bar/:id',
                 element: <BarProfile />
             },
-            // {
-            //     path: '/tour/:id',
-            //     element: <TourProfile />
-            // },
+            {
+                path: '/bar-signup',
+                element: <LocationSignup />
+            },
             // {
             //     path: '/create-tour',
             //     element: <CreateTour />  to be continued
