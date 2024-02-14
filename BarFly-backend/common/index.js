@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import multer from "multer";
-import random from "random";
 import { v2 as cloudinary } from "cloudinary";
 import axios from "axios";
 import nodemailer from 'nodemailer';
@@ -12,6 +11,7 @@ import HttpError from "../models/http-errors.js";
 
 import { User } from '../models/usersModel.js';
 
+// configuration to access .env-file
 dotenv.config();
 
 const SALT_ROUNDS = 11;
@@ -45,7 +45,8 @@ const checkToken = async (req, res, next) => {
       // status 401 unauthorized
       return next(new HttpError('Invalid token', 401));
     }
-    // check token
+
+    // get token from headers
     const token = authorization.split(" ")[1];
   
     let decoded;
@@ -67,6 +68,7 @@ const checkToken = async (req, res, next) => {
     next();
 };
 
+// configuration emailing service
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT,
@@ -75,30 +77,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASSWORD
   }
 });
-
-
-// 
-// TODO: veraltete funktion???
-// 
-// 
-const userExists = (users, nickname, email) => {
-    // Prüfen im Members Array auf Vorhandensein
-    // Early return pattern (sobald wie möglich die Funktion verlassen)
-  
-    if (
-      users.findIndex(
-        (user) => user.nickname === nickname || user.email === email
-      ) > -1
-    ) {
-      return true;
-    }
-  
-    return false;
-};
-// 
-// 
-// 
-// 
 
 
 // Cloudinary functionality
@@ -131,9 +109,9 @@ const sendFileToCloudinary = async (image, folder) => {
     try {
       await cloudinary.uploader.destroy(publicId);
     } catch (error) {
-      console.log('cloudinary error', error);
+      console.error('cloudinary error', error);
     }
-};
+  };
 
 const deleteFile = (path) => {
     try{
@@ -160,17 +138,18 @@ const storage = multer.diskStorage({
     },
   });
   
+  // maximum file size of 5 MB
   const limits = {
-    fileSize: 1024 * 1024 * 5, // max 5 MB
+    fileSize: 1024 * 1024 * 5
   };
   
+  // accepting these types of files
   const fileFilter = (req, file, callback) => {
     if (
       file.mimetype === 'image/jpeg' ||
       file.mimetype === 'image/jpg' ||
       file.mimetype === 'image/png' ||
-      file.mimetype === 'image/gif' ||
-      file.mimetype === 'image/heic'
+      file.mimetype === 'image/gif' 
     ) {
       return callback(null, true);
     }
@@ -201,28 +180,31 @@ const storage = multer.diskStorage({
     };
     
   };
+
+  // TO BE developed for calculating distances between locations, users, etc
   
-  function getGeoDistances(lat1, lon1, lat2, lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lon2-lon1); 
-    var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    return d;
-  };
+  // function getGeoDistances(lat1, lon1, lat2, lon2) {
+  //   var R = 6371; // Radius of the earth in km
+  //   var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  //   var dLon = deg2rad(lon2-lon1); 
+  //   var a = 
+  //     Math.sin(dLat/2) * Math.sin(dLat/2) +
+  //     Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+  //     Math.sin(dLon/2) * Math.sin(dLon/2)
+  //     ; 
+  //   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  //   var d = R * c; // Distance in km
+  //   return d;
+  // };
   
-  function deg2rad(deg) {
-    return deg * (Math.PI/180)
-  };
+  // function deg2rad(deg) {
+  //   return deg * (Math.PI/180)
+  // };
 
 
+  // calculating age when signing up
   const getAge = (year, month, day) => {
-    // Achtung: bei Javascript fangen Monate mit 0 an!
+  
     const today = new Date();
     const birthDate = new Date(year, month, day);
   
@@ -235,31 +217,8 @@ const storage = multer.diskStorage({
       return age;
   };
 
-const generateTour = () => {
-  // eingabe:
-  // standort (city)
-  // anzahl stationen (2-4)
-  // array categories (0-3)
-
-  // get all locations from city
-
-  // loop with all values from category-array through categories-array of location objects to compare => vibe array
-
-  // if no categories => randomize?
-
-  // getDistance zw Standort & vibe array locations => sort by nearest locations
-
-  // splice sorted array by anzahl stationen
-
-  // push ergebnis in resultTours-array (array aus arrays mit location objects)
-
-  // rinse & repeat für alle angegebenen categories für alternative touren
-};
-
-
   export {
     getHash,
-    userExists,
     transporter,
     checkPassword,
     getToken,
@@ -269,7 +228,7 @@ const generateTour = () => {
     sendFileToCloudinary,
     getGeolocation,
     deleteFileInCloudinary,
-    getGeoDistances,
-    deg2rad,
+    // getGeoDistances,
+    // deg2rad,
     getAge
   };

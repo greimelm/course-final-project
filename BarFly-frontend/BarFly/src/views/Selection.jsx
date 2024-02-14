@@ -12,7 +12,7 @@ import Logo from '../assets/BarFlyLogoPurple.png';
 import SelectionGrid from '../components/layout/SelectionGrid';
 
 const Selection = () => {
-    const { generatetour, city, categoryArr, error } = useStore((state) => state);
+    const { generatetour, categoryArr, error, remembertourname } = useStore((state) => state);
     const navigate = useNavigate();
 
     const { formState, handleChange } = useForm({
@@ -22,12 +22,12 @@ const Selection = () => {
 
     const handleClick = () => {
         navigate('/start');
-        
     };
 
     const handleGenerate = () => {
-
+      remembertourname(formState.tourName);
         console.log(categoryArr);
+      generatetour(categoryArr);
     };
 
 return (
@@ -66,7 +66,8 @@ return (
               required
               label="Stadt"
               name="city"
-              value={formState.city}
+              value="Wien"
+              // value={formState.city}
               onChange={handleChange}
             />
           </Grid>

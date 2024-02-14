@@ -19,10 +19,6 @@ const Start = () => {
   
   const navigate = useNavigate();
 
-  //
-  // TODO: write chosen city in zustand
-  //
-
   const handleChange = (event) => {
     console.log(event.target.inputProps); //kein zugriff
   };
@@ -31,19 +27,17 @@ const Start = () => {
     navigate("/selection");
   };
 
+  // a list of cities from signed up bars (replaced by a sample list for now)
   const cities = [
-    { label: "Vienna" },
-    { label: "Vilnius" },
-    { label: "Villach" },
+    { label: "Wien" },
+    { label: "Hamburg" },
+    { label: "Berlin" },
+    { label: "Graz" },
+    { label: "Regensburg" }
   ];
 
   return (
     <>
-      {/* Header (Logo links, Buttons Registrierung & Login rechts)
-        Typography: Willkommen! o.Ä.
-        Auswahl/suche nach Stadt
-        Footer (anders für Startseite mit Beispielbildern)
-    */}
       <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <Typography variant="h2" sx={{ mb: '5vh'}}>Willkommen</Typography>
         <Typography variant="h4" sx={{ mb: '3vh'}}>Wähle eine Stadt</Typography>

@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import mongoose from "mongoose";
+import * as dotenv from 'dotenv';
 import { validationResult, matchedData } from "express-validator";
 
 import { User, Password } from "../models/usersModel.js";
@@ -17,12 +18,15 @@ import {
   transporter
 } from "../common/index.js";
 
+dotenv.config();
 
+// looking for all users in the data base
 const getAllUsers = async (req, res) => {
   const users = await User.find({});
   res.json(users);
 };
 
+// looking for one user via ID
 const getOneUser = async (req, res, next) => {
   let user;
 
@@ -31,9 +35,9 @@ const getOneUser = async (req, res, next) => {
   } catch (error) {
     return next(new HttpError("Cant find user", 404));
   }
-
   res.json(user);
 };
+
 
 const signup = async (req, res, next) => {
   // express-validator
@@ -41,19 +45,15 @@ const signup = async (req, res, next) => {
 
   const formData = req.body;
 
-  // console.log(req);
-  console.log(formData);
-  console.log(formData.nickname);
-  // error message to client
+  // if there's an error so far, display it and delete photo in storage
   if (result.errors.length > 0) {
     deleteFile(req.file.path);
     return next(new HttpError(JSON.stringify(result), 422));
   }
 
   const matchData = matchedData(req);
-  console.log(matchData);
 
-  //error if there is no image
+  //error if there is no photo
   if (!req.file) {
     return next(new HttpError("Photo is missing", 423));
   }
@@ -77,8 +77,9 @@ const signup = async (req, res, next) => {
     matchData.street + ", " + matchData.zip + ", " + matchData.city;
   const geo = await getGeolocation(address);
 
+  // compile user object with retrieved & calculated data
   const createdUser = new User({
-    ...req.body,
+    ...formData,
     ...matchData,
     photo,
     unlockKey,
@@ -87,18 +88,17 @@ const signup = async (req, res, next) => {
   });
 
   let newUser;
-  // 
-  // 
-  // 
-  // TODO: Fehlerbehandlung
+  
+
   try {
-    // Session und Transaction starten
+    // start session/transaction
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    // Speichern im Kontext der Transaction
+    // save in context of transaction
     newUser = await createdUser.save({ session });
 
+    // save password in reference to user
     const createdPassword = new Password({
       user: newUser._id,
       password: getHash(req.body.password),
@@ -106,7 +106,7 @@ const signup = async (req, res, next) => {
 
     await createdPassword.save({ session });
 
-    const activationLink = `http://localhost:8888/api/unlock?unlockKey=${encodeURIComponent(
+    const activationLink = `${process.env.HOST}/unlock?unlockKey=${encodeURIComponent(
       unlockKey
     )}`;
 
@@ -118,26 +118,21 @@ const signup = async (req, res, next) => {
       html: `<p>Hallo,</p><p>Klicke den folgenden Link um Deinen Account freizuschalten:</p><a href="${activationLink}">${activationLink}</a>`,
     });
 
-    console.log(mailSent);
-
     // abort if message cannot be sent
     if (!mailSent) {
       await session.abortTransaction();
       return next(new HttpError(error, 500));
     }
-    console.log('Message sent:', mailSent.messageId);
 
     // commit transaction and save in this context
     await session.commitTransaction();
   } catch (error) {
-    console.log(error);
     deleteFile(req.file.path);
     return next(new HttpError(error, 422));
   }
 
   
   res.send(newUser);
-  console.log('signed up successfully');
 };
 
 const login = async (req, res, next) => {
@@ -149,17 +144,15 @@ const login = async (req, res, next) => {
       $or: [{ nickname: login }, { email: login }],
     });
 
-    // user has to unlock first
+    // user has to activate account via email link first
     if(!foundUser.activated) {
       return next(new HttpError('User not activated yet', 401));
     }
 
     // checking password (different collection)
     const foundPassword = await Password.findOne({ user: foundUser._id });
-    console.log(foundPassword);
 
     const isPasswordOk = checkPassword(password, foundPassword.password);
-    console.log(isPasswordOk);
 
     if (!isPasswordOk) {
       return next(new HttpError("Wrong login or password", 401));
@@ -168,7 +161,6 @@ const login = async (req, res, next) => {
     // creating a token
     const token = getToken({ id: foundUser._id });
 
-    console.log(token);
     // send token
     res.send(token);
   } catch {
@@ -177,11 +169,7 @@ const login = async (req, res, next) => {
 };
 
 
-// 
-// 
-// 
 const unlock = async (req, res, next) => {
-  console.log('hallooo', req.query);
 
   // receiving unlockKey from request headers
   const unlockKey  = req.query.unlockKey;
@@ -200,23 +188,22 @@ const unlock = async (req, res, next) => {
       return next(new HttpError('invalid unlock key', 401));
     }
 
-    // set activated true, reset info, save updated user
+    // activate account, reset info, save updated user
     foundUser.activated = true;
     foundUser.unlockEndsAt = 0;
     foundUser.unlockKey = '';
     await foundUser.save();
   } catch {
-    return next(new HttpError('Cannot unlock member', 400));
+    return next(new HttpError('Cannot activate user', 400));
   }
 
-  res.send('Unlock successful');
+  res.send('Activation successful');
 };
-// 
-// 
-// 
+
 
 
 const editUser = async (req, res, next) => {
+  // user has to be logged in or be an admin
   const { id } = req.params;
 
   const result = validationResult(req);
@@ -227,10 +214,6 @@ const editUser = async (req, res, next) => {
 
   const matchData = matchedData(req);
 
-  // search for user
-  // 
-  // 
-  // TODO: warum 2x fehler catchen???
   let user;
   try {
     user = await User.findById(id);
@@ -289,14 +272,9 @@ const changePassword = async (req, res, next) => {
 
   const { oldPassword, newPassword } = matchData;
 
-  // 
-  // 
-  // TODO:
-  // ist altes Kennwort korrekt?
-  // Password checken (Achtung, eigene Tabelle)
-  // TODO: Fehlerbehandlung
   const foundPassword = await Password.findOne({ user: req.verifiedUser._id });
 
+  // checking if the old and provided passwords match
   const isPasswordOk = checkPassword(oldPassword, foundPassword.password);
   if (!isPasswordOk) {
     return next(new HttpError('old password does not match', 401));
@@ -311,6 +289,7 @@ const changePassword = async (req, res, next) => {
 
 
 const deleteUser = async (req, res, next) => {
+  // user has to be logged in
   const { id } = req.params;
 
   console.log(req.verifiedUser);
@@ -328,7 +307,7 @@ const deleteUser = async (req, res, next) => {
 
   // looking if user has admin rights
   if (!req.verifiedUser.isAdmin) {
-    // if not:
+    // if not and it's not the same user:
     if (req.verifiedUser._id != id) {
       return next(new HttpError('not allowed to delete user', 403));
     }
@@ -344,13 +323,7 @@ const deleteUser = async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    
-    // delete favourite locations
     let search = { user: id };
-    await FavouriteLocation.deleteMany( search, { session });
-    
-    // delete favourite tours
-    await FavouriteTour.deleteMany( search, { session });
 
     // delete password
     await Password.findOneAndDelete( search, { session });
@@ -361,7 +334,7 @@ const deleteUser = async (req, res, next) => {
     // confirm transaction
     await session.commitTransaction();
 
-    // delete image in cloudinary
+    // delete image in cloudinary as soon as user is deleted
     await deleteFileInCloudinary(publicId);
   } catch (error) {
     console.log('error is: ', error);

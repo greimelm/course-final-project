@@ -14,7 +14,12 @@ import RoutingControl from '../utils/RoutingControl';
 import TourCard from '../components/layout/TourCard';
 import Logo from '../assets/BarFlyLogolight.png';
 
+import useStore from '../stores/useStore';
+
 const GeneratedTours = () => {
+    const { toursArr } = useStore((state) => state);
+
+    console.log(toursArr);
 
     const navigate = useNavigate();
 

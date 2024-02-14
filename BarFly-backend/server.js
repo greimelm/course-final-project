@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
-// customizing helmet ---NICO
+// custom helmet configuration to avoid basic cybersecurity threads
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
@@ -52,6 +52,7 @@ app.use((error, req, res, next) => {
     res.status(error.errorCode || 500).json({ message: error.message || "Unknown error" });
 });
 
+// connecting to MongoDB data base
 const CONNECTION_STRING = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@barflycluster.plqmhvr.mongodb.net/`;
 
 mongoose

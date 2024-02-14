@@ -1,4 +1,5 @@
 import { User } from '../models/usersModel.js';
+import HttpError from '../models/http-errors.js';
 
 const createFavouriteLocation = async (req, res, next) => {
 
@@ -13,16 +14,16 @@ const createFavouriteLocation = async (req, res, next) => {
     if (!user) {
       return next(new HttpError('Cant find user', 404));
     }
-
-    if (user.favorites.includes(locationId)) {
+    // return if the user already has the bar saved as favourites
+    if (user.favouriteLocations.includes(locationId)) {
       return next(new HttpError('Favourite locations must be unique', 409));
     }
 
     user.favouriteLocations.push(locationId);
+    // save new user data and display favourite location objects in the array
     savedUser = await user.save();
     savedUser = await User.findById(userId).populate('favouriteLocations');
   } catch (error) {
-    console.log(error);
     return next(new HttpError('Cant find user', 404));
   }
 
@@ -46,7 +47,7 @@ const deleteFavouriteLocation = async (req, res, next) => {
     savedUser = await user.save();
     savedUser = await User.findById(userId).populate('favouriteLocations');
   } catch (error) {
-    console.log(error);
+    
     return next(new HttpError('Cant find user', 404));
   }
 
@@ -75,7 +76,7 @@ const createFavouriteTour = async (req, res, next) => {
     savedUser = await user.save();
     savedUser = await User.findById(userId).populate('favouriteTours');
   } catch (error) {
-    console.log(error);
+   
     return next(new HttpError('Cant find user', 404));
   }
 
@@ -98,7 +99,7 @@ const deleteFavouriteTour = async (req, res, next) => {
     savedUser = await user.save();
     savedUser = await User.findById(userId).populate('favouriteTours');
   } catch (error) {
-    console.log(error);
+   
     return next(new HttpError('Cant find user', 404));
   }
 

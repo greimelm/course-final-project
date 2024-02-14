@@ -7,13 +7,9 @@ import { Location } from '../models/locationModel.js';
 import HttpError from "../models/http-errors.js";
 
 import {
-    getToken,
     deleteFile,
-    getHash,
     sendFileToCloudinary,
-    deleteFileInCloudinary,
-    checkPassword,
-    getGeolocation
+    deleteFileInCloudinary
 } from "../common/index.js";
 
 const createTour = async (req, res, next) => {
@@ -62,7 +58,6 @@ const createTour = async (req, res, next) => {
     ...req.body,
     ...matchData,
     locations,
-    owner: id,
     photo
   });
 
@@ -182,14 +177,9 @@ const deleteTour = async (req, res, next) => {
     session.startTransaction();
 
     
-    // delete in favourite locations
-    let search = { tour: id };
-    await FavouriteTour.deleteMany( search, { session });
+    // delete in user's favouriteTours
 
-    // 
-    // alles in zusammenhang mit tour gelöscht?
-    // 
-
+  
     //  delete tour
     await tour.deleteOne({ session });
 
@@ -210,46 +200,66 @@ const generateTour = async(req, res, next) => {
   // validate form data (name, city(choose from list), numStations, array of categories(categories added by configured buttons))
   // description checked in matchedData
 
-   // save each in variables
-  const numStations = 3;
+  const result = validationResult(req);
 
-  const categoriesArr = ['hot spot', 'award winning'];
+  if (result.errors.length > 0) {
+    return next(new HttpError(JSON.stringify(result), 422));
+  }
+
+  const matchData = matchedData(req);
+
+  console.log(matchData);
+
+  const { categoryArr } = matchData;
+  
+
+  // save each in variables
+
+  const numStations = 3;
  
   let filteredBars = [];
 
   try{
-  // pull locations filtered by city => barArray
+  // filter for bars in selected city (for now it's only Vienna)
   filteredBars = await Location.find({ city: 'Wien' });
-  // console.log(filteredBars);
+
+  // randomize filteredBars
+
   } catch (error) {
     console.log(error);
     return next(new HttpError("Server error", 500));
   }
+  
+  let finalTours = [];
+  let oneTour = [];
 
-  let finalBars = [];
+  // while there are enough filtered bars to create a tour,
+  for (let k=numStations; k < filteredBars.length; k += 0) {
+
   for (let j=0; j < numStations; j += 1) {
-  for (let i=0; i < categoriesArr.length; i+= 1) {
-    let selectedCategory = categoriesArr[i];
-    // console.log(i);
-    console.log(selectedCategory);
-    // console.log(filteredBars[2]);
-    const result = filteredBars.find(obj => obj.categories.includes(selectedCategory));
-    console.log(result);
-    if(result) {
-      finalBars.push(result);
-      // removing added bars
-      filteredBars.splice(filteredBars.indexOf(result), 1);
-    }
+    // check for all selected categories in the selected number of filtered bars
+  for (let i=0; i < categoryArr.length; i+= 1) {
+    let selectedCategory = categoryArr[i];
     
+    console.log(selectedCategory);
+    
+    const resultBar = filteredBars.find(obj => obj.categories.includes(selectedCategory));
+    console.log(resultBar);
+  // if there is a match of selected and bar category, the bar gets added to the tour
+    if(resultBar) {
+      oneTour.push(resultBar);
+      // removing bar to avoid duplicates
+      filteredBars.splice(filteredBars.indexOf(resultBar), 1);
+     }
     }
   }
+  // add tour to the list of alternatives
+  finalTours.push(oneTour);
+}
 
-  console.log(finalBars);
-  // => equals 1 tour
-
-  // tours need to be unique
-  // there should be alternatives
-  res.send(finalBars);
+  console.log(finalTours);
+ 
+  res.send(finalTours);
 
 };
 

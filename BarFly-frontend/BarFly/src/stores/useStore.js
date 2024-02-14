@@ -8,8 +8,6 @@ import { HOST } from '../utils/constants.js';
 // 
 // check all comments & responses
 // 
-
-// TODO userObj
 const initialState = {
   newUser: null,
   userObj: null,
@@ -23,7 +21,9 @@ const initialState = {
   password: null,
   success: false,
   categoryArr: [],
-  city: null
+  city: null,
+  tourName: null,
+  toursArr: []
 };
 
 const SECONDS_TO_RELOGIN = 30;
@@ -31,7 +31,7 @@ const SECONDS_TO_RELOGIN = 30;
 const useStore = create((set, get) => ({
   ...initialState,
   checkToken: () => {
-    // wenn user object vorhanden ist dann prüfen, ob der Token noch gültig ist
+    // if there's a user object, check if the token is still viable
     if (get().userObj) {
       if (get().decodedToken.exp - +new Date() / 1000 < SECONDS_TO_RELOGIN) {
         if (get().login && get().password) {
@@ -50,10 +50,10 @@ const useStore = create((set, get) => ({
     const decodedToken = jwtDecode(token);
     set({ token, decodedToken });
 
-    // Stammdaten vom angemeldeten Benutzer holen
+    // api call to backend
     fetchAPI({ url: HOST + '/users/' + decodedToken.id })
       .then((response) => {
-        // Stammdaten als "userObj" speichern
+        
         set({ userObj: response.data });
       })
       .catch((error) => {
@@ -68,53 +68,44 @@ const useStore = create((set, get) => ({
 
     set({ loading: true, error: null, userObj: null });
 
-    // Login im Backend versuchen
     fetchAPI({ url: HOST + '/users/login', method: 'post', data: { login, password } })
       .then((response) => {
-        // reponse.data = Token, Statuscode = 200
-        console.log(response);
-        
-
+      
         if (response.status !== 200) {
           // selbst einen Fehler erzeugen
           throw new Error('Invalid status code');
         }
 
-        // Token decoden, ID rauslesen
+        // decode token, get ID
         // https://www.npmjs.com/package/jwt-decode
         const token = response.data;
         const decodedToken = jwtDecode(token);
         console.log(decodedToken);
         set({ token, decodedToken, login, password });
 
-        // Token in localeStorage schreiben
+        // save token in local storage
         localStorage.setItem('token', token);
 
-        // Stammdaten vom angemeldeten Benutzer holen
+        // fetch user
         return fetchAPI({ url: HOST + '/users/' + decodedToken.id });
       })
       .then((response) => {
-        // Stammdaten als "user" speichern
+        // save response data as user object in store
         set({ userObj: response.data });
       })
       .catch((error) => {
-        console.log('ich bin in catch', error);
         set({ error });
       })
-      .finally(() => {
-        // Laden der Daten beendet
+      .finally(() => {  
         set({ loading: false });
       });
   },
 
   usersignup: (data) => {
-    // bekommt Daten aus einer Maske über Parameter
     set({ loading: true, error: null, newUser: null });
 
-    // Neuregistrierung im Backend versuchen
     fetchAPI({ url: HOST + '/users/signup', method: 'post', data })
       .then((response) => {
-        // reponse.data = der neue Member, Statuscode = 201
         if (response.status === 200) {
           set({ newUser: response.data});
         } else {
@@ -122,11 +113,9 @@ const useStore = create((set, get) => ({
         }
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
-        // Laden der Daten beendet
         set({ loading: false });
       });
   },
@@ -137,10 +126,9 @@ const useStore = create((set, get) => ({
   },
 
   editProfile: (data) => {
-    // bekommt Daten aus einer Maske über Parameter
     set({ loading: true, error: null, success: false });
 
-    // Neuregistrierung im Backend versuchen
+    // set ID in params
     fetchAPI({
       url: HOST + '/users/edit/' + get().userObj._id,
       method: 'patch',
@@ -148,7 +136,6 @@ const useStore = create((set, get) => ({
       token: get().token,
     })
       .then((response) => {
-        // reponse.data = der neue User, Statuscode = 201
         if (response.status === 200) {
           set({ userObj: response.data, success: true });
         } else {
@@ -156,20 +143,17 @@ const useStore = create((set, get) => ({
         }
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
-        // Laden der Daten beendet
         set({ loading: false });
       });
   },
 
   changePassword: (oldPassword, newPassword) => {
-    // bekommt Daten aus einer Maske über Parameter
+  
     set({ loading: true, error: null, success: false });
 
-    // Passwort ändern im Backend versuchen
     fetchAPI({
       url: HOST + '/users/change-password',
       method: 'patch',
@@ -177,7 +161,7 @@ const useStore = create((set, get) => ({
       token: get().token,
     })
       .then((response) => {
-        // reponse.data = der neue Member, Statuscode = 200
+       
         if (response.status === 200) {
           set({ success: true });
         } else {
@@ -185,27 +169,22 @@ const useStore = create((set, get) => ({
         }
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
-        // Laden der Daten beendet
         set({ loading: false });
       });
   },
 
   deleteUser: () => {
-    // Reset
     set({ loading: true, error: null, success: false });
 
-    // Schnittstelle mit Post aufrufen
     fetchAPI({
       url: HOST + '/users/' + get().userObj._id,
       method: 'delete',
       token: get().token,
     })
       .then((response) => {
-        // reponse.data = der neue Member, Statuscode = 200
         if (response.status === 200) {
           set({ success: true });
           get().logout();
@@ -214,23 +193,20 @@ const useStore = create((set, get) => ({
         }
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
-        // Laden der Daten beendet
         set({ loading: false });
       });
   },
 
   locationsignup: (data) => {
-    // bekommt Daten aus einer Maske über Parameter
     set({ loading: true, error: null, newLocation: null });
 
-    // Neuregistrierung im Backend versuchen
+    // sign up location only as logged in user
     fetchAPI({ url: HOST + '/locations/signup', method: 'post', data, token: get().token })
       .then((response) => {
-        // reponse.data = der neue Member, Statuscode = 201
+     
         if (response.status === 200) {
           set({ newLocation: response.data});
         } else {
@@ -238,11 +214,9 @@ const useStore = create((set, get) => ({
         }
       })
       .catch((error) => {
-        // console.log('ich bin in catch', error);
         set({ error });
       })
       .finally(() => {
-        // Laden der Daten beendet
         set({ loading: false });
       });
   },
@@ -266,23 +240,17 @@ const useStore = create((set, get) => ({
     })
   },
 
-  // locationedit
-  // deletelocation
 
   generatetour: (data) => {
-    // bekommt Daten aus einer Maske über Parameter
     set({ loading: true, error: null, success: false });
 
-    // Tour generieren im Backend versuchen
     fetchAPI({
       url: HOST + '/generate-tour',
-      method: 'get',
       data
     })
       .then((response) => {
-        // reponse.data = der neue Member, Statuscode = 200
         if (response.status === 200) {
-          set({ success: true });
+          set({ success: true, toursArr: response.data });
         } else {
           throw new Error('Vom Server kam was komisches');
         }
@@ -303,6 +271,10 @@ const useStore = create((set, get) => ({
 
   clearerror: () => {
     set({ error: null });
+  },
+
+  remembertourname: (tourName) => {
+    set({ tourName });
   },
 
   addFavLocation: (locationId) => {
