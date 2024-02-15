@@ -1,1 +1,1 @@
-export const HOST = 'https://barfly-bhlb.onrender.com/';
+export const HOST = 'https://barfly-bhlb.onrender.com';
