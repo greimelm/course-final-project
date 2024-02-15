@@ -39,7 +39,6 @@ const checkToken = async (req, res, next) => {
   
     const { authorization } = req.headers;
 
-    console.log(req.headers);
   
     if (!authorization) {
       // status 401 unauthorized

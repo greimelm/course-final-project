@@ -1,1 +1,1 @@
-export const HOST = 'http://localhost:8888/api';
+export const HOST = 'https://barfly-bhlb.onrender.com/';
