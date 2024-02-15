@@ -13,6 +13,7 @@ import {
 import PictureSlider from "../components/layout/PictureSlider";
 import DeleteUserDialog from '../components/layout/DeleteUserDialog';
 
+
 import useStore from '../stores/useStore';
 
 const UserProfile = () => {
@@ -65,7 +66,7 @@ const UserProfile = () => {
           <PictureSlider />
         </Paper>
         <Paper sx={{ display: "flex", flexDirection: "column", m: "2rem" }}>
-          <Button variant="contained" sx={{ m: "2rem" }} >
+          <Button variant="contained" sx={{ m: "2rem" }} onClick={() => navigate('/user-edit')}>
             edit profile
           </Button>
           <Button variant="contained" sx={{ m: "2rem" }} >

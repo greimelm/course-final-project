@@ -21,9 +21,7 @@ import useStore from "../stores/useStore";
 import useForm from "../hooks/useForm";
 import ImageUploader from "../components/common/ImageUploader";
 
-//
-// ccheck all comments
-//
+
 
 const EditUserProfile = () => {
   // getting state from store
