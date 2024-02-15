@@ -7,7 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useForm from '../hooks/useForm';
 import useStore from '../stores/useStore';
 
-import Logo from '../assets/BarFlyLogoPurple.png';
+import Logo from '../assets/BarFlyLogopurple.png';
 
 import SelectionGrid from '../components/layout/SelectionGrid';
 
