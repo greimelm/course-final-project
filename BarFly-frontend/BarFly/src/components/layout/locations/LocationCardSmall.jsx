@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import useStore from '../../../stores/useStore';
 
-// TO BE developed and implemented
+
 
 const LocationCardSmall = (props) => {
 
+
+    // TO BE developed and implemented
     const navigate = useNavigate();
 
    

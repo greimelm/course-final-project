@@ -3,25 +3,19 @@ import { Navigate } from 'react-router-dom';
 import LayoutPublic from './components/layout/LayoutPublic';
 import LayoutPrivate from './components/layout/LayoutPrivate';
 
-// TODO relative paths
 import Start from './views/Start';
 import UserSignup from './views/UserSignup';
 import UserLogin from './views/UserLogin';
 import UserProfile from './views/UserProfile';
 import EditUserProfile from './views/EditUserProfile';
 import Selection from './views/Selection';
-// import CreateTour from './views/CreateTour';
 import GeneratedTours from './views/GeneratedTours';
-// import Home from './views/Home';
 import FavBars from './views/FavBars';
 import FavTours from './views/FavTours';
 import LocationSignup from './views/LocationSignup';
 import BarProfile from './views/BarProfile';
 
 
-// 
-// TODO redirect bei routen, die es nicht gibt
-// 
 
 const routesPublic = [
     {
